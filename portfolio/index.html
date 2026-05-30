@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>황승호 · 게임 시스템 기획자 [Dark]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --indigo:    #818CF8; --indigo-lt: #A5B4FC; --indigo-dim: rgba(99,102,241,.18);
+      --amber:     #F59E0B; --amber-lt:  #FCD34D; --amber-dim:  rgba(245,158,11,.15);
+      --dark:      #F0F6FC; --mid:       #C9D1D9; --muted:      #8B949E;
+      --border:    #21262D; --bg:        #0D1117; --white:      #161B22;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--dark); font-family: 'Noto Sans KR', system-ui, sans-serif; line-height: 1.6; overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,17,23,.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: .875rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { font-weight: 900; font-size: .95rem; letter-spacing: .06em; }
+    .nav-logo em { font-style: normal; color: var(--indigo); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: .82rem; font-weight: 600; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--indigo); }
+
+    /* HERO */
+    #hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 8rem 6vw 5rem; position: relative; overflow: hidden; background: var(--bg); }
+    .hero-dot-bg { display: none; }
+    .hero-inner { position: relative; width: 100%; max-width: 1600px; display: grid; grid-template-columns: 1fr clamp(280px, 22vw, 420px); gap: clamp(3rem, 5vw, 7rem); align-items: center; }
+    .hero-eyebrow { display: flex; align-items: center; gap: .6rem; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--indigo); margin-bottom: 1.5rem; }
+    .hero-eyebrow::before { content: ''; width: 24px; height: 2px; background: var(--indigo); border-radius: 2px; }
+    .hero-name { font-size: clamp(3.5rem, 9vw, 9rem); font-weight: 900; letter-spacing: -.05em; line-height: .95; margin-bottom: 1.25rem; color: var(--dark); }
+    .hero-role { font-size: clamp(.95rem, 1.2vw, 1.15rem); color: var(--muted); font-weight: 400; margin-bottom: 2rem; line-height: 1.75; max-width: 560px; }
+    .hero-role strong { color: var(--dark); font-weight: 700; }
+    .hero-cta { display: flex; gap: .875rem; flex-wrap: wrap; }
+    .hero-right { display: flex; flex-direction: column; gap: .875rem; }
+    .btn { padding: .75rem 1.75rem; border-radius: 6px; font-size: .85rem; font-weight: 700; text-decoration: none; transition: all .22s; display: inline-flex; align-items: center; gap: .4rem; }
+    .btn-primary { background: var(--indigo); color: #fff; }
+    .btn-primary:hover { background: #6366F1; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(129,140,248,.3); }
+    .btn-outline { border: 1.5px solid var(--border); color: var(--mid); background: transparent; }
+    .btn-outline:hover { border-color: var(--indigo); color: var(--indigo); transform: translateY(-2px); }
+    .hic { background: #1C2128; border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: 0 1px 8px rgba(0,0,0,.3); }
+    .hic-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: .3rem; }
+    .hic-value { font-size: .95rem; font-weight: 700; color: var(--dark); }
+    .hic-sub { font-size: .75rem; color: var(--muted); margin-top: .1rem; }
+    .badge-green { display: inline-flex; align-items: center; gap: .35rem; background: rgba(34,197,94,.15); color: #4ADE80; border-radius: 100px; padding: .15rem .65rem; font-size: .72rem; font-weight: 700; margin-top: .4rem; }
+    .badge-green::before { content: ''; width: 6px; height: 6px; background: #22C55E; border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+    @keyframes spin  { to { transform: rotate(360deg); } }
+
+    /* STATS */
+    #stats { background: #111827; padding: 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; text-align: center; }
+    .stat-num { font-size: 3rem; font-weight: 900; color: #fff; letter-spacing: -.05em; line-height: 1; margin-bottom: .3rem; }
+    .stat-num sup { font-size: 1.5rem; vertical-align: super; }
+    .stat-lbl { font-size: .8rem; color: rgba(255,255,255,.7); font-weight: 500; }
+    .stat-sub { font-size: .68rem; color: rgba(255,255,255,.4); margin-top: .15rem; }
+
+    /* SECTION */
+    .section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; }
+    .section-bg { background: #0f1520; }
+    .sec-eye { display: flex; align-items: center; gap: .6rem; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--indigo); margin-bottom: .75rem; }
+    .sec-eye::before { content: ''; width: 20px; height: 2px; background: var(--indigo); border-radius: 2px; }
+    .sec-title { font-size: clamp(1.8rem,4vw,2.75rem); font-weight: 900; letter-spacing: -.04em; color: var(--dark); margin-bottom: 1rem; }
+    .sec-desc { color: var(--muted); font-size: .95rem; max-width: 480px; line-height: 1.75; margin-bottom: 3rem; }
+
+    /* IMAGE SLIDER */
+    .slider { position: relative; width: 100%; height: 220px; border-radius: 10px; overflow: hidden; background: #1C2128; margin-bottom: 1.5rem; flex-shrink: 0; }
+    .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .65s ease; }
+    .slide.active { opacity: 1; }
+    .slider-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: .5rem; }
+    .slider-placeholder-icon { font-size: 2.2rem; opacity: .25; }
+    .slider-placeholder-txt { font-size: .78rem; color: var(--muted); opacity: .6; }
+    .slider-dots { position: absolute; bottom: .75rem; left: 50%; transform: translateX(-50%); display: flex; gap: .4rem; z-index: 2; }
+    .sdot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.35); cursor: pointer; transition: all .25s; }
+    .sdot.active { background: white; width: 18px; border-radius: 3px; }
+    .slider-arrows { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 .5rem; opacity: 0; transition: opacity .2s; }
+    .slider:hover .slider-arrows { opacity: 1; }
+    .sarrow { background: rgba(0,0,0,.5); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .sarrow:hover { background: rgba(0,0,0,.75); }
+
+    /* PROJECT CARDS */
+    .proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+    .proj-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: all .3s; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+    .proj-card:hover { border-color: var(--indigo); transform: translateY(-5px); box-shadow: 0 16px 48px rgba(129,140,248,.15); }
+    .proj-body { padding: 1.75rem; display: flex; flex-direction: column; flex: 1; position: relative; }
+    .proj-number { position: absolute; top: 1.25rem; right: 1.5rem; font-size: 3.5rem; font-weight: 900; color: rgba(255,255,255,.04); letter-spacing: -.05em; line-height: 1; transition: color .3s; }
+    .proj-card:hover .proj-number { color: var(--indigo-dim); }
+    .ptag { display: inline-block; padding: .22rem .7rem; border-radius: 5px; font-size: .7rem; font-weight: 700; margin-bottom: 1.1rem; }
+    .ptag-content { background: var(--indigo-dim); color: var(--indigo); }
+    .ptag-bm      { background: var(--amber-dim);  color: var(--amber); }
+    .proj-title { font-size: 1.2rem; font-weight: 800; color: var(--dark); margin-bottom: .3rem; letter-spacing: -.03em; }
+    .proj-period { font-size: .75rem; color: var(--muted); margin-bottom: 1rem; }
+    .proj-desc { font-size: .86rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.5rem; }
+    .proj-hr { height: 1px; background: var(--border); margin-bottom: 1.25rem; }
+    .proj-metrics { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: auto; }
+    .metric { background: #1C2128; border: 1px solid var(--border); border-radius: 6px; padding: .23rem .65rem; font-size: .73rem; color: var(--muted); }
+    .metric b { color: var(--indigo); }
+    .metric.m-amber b { color: var(--amber); }
+    .proj-link { display: inline-flex; align-items: center; gap: .3rem; margin-top: 1.25rem; font-size: .8rem; font-weight: 700; color: var(--indigo); text-decoration: none; transition: gap .2s; }
+    .proj-link:hover { gap: .6rem; }
+
+    /* CAREER */
+    .career-list { display: flex; flex-direction: column; gap: 2rem; }
+    .career-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+    .career-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    .career-logo { width: 52px; height: 52px; border-radius: 12px; object-fit: contain; background: #1C2128; border: 1px solid var(--border); padding: 5px; flex-shrink: 0; }
+    .career-logo-placeholder { width: 52px; height: 52px; border-radius: 12px; background: var(--indigo-dim); border: 1px solid rgba(129,140,248,.2); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .career-header-info { flex: 1; }
+    .career-co { font-size: 1.2rem; font-weight: 900; color: var(--dark); letter-spacing: -.03em; margin-bottom: .2rem; }
+    .career-role-txt { font-size: .85rem; color: var(--indigo); font-weight: 700; margin-bottom: .15rem; }
+    .career-dates { font-size: .76rem; color: var(--muted); }
+    .career-banner { position: relative; height: 200px; overflow: hidden; background: #1C2128; border-bottom: 1px solid var(--border); }
+    .career-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .career-banner-placeholder { height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #1C2128; border-bottom: 1px solid var(--border); gap: .5rem; }
+    .career-banner-placeholder-icon { font-size: 2rem; opacity: .3; }
+    .career-banner-placeholder-txt { font-size: .78rem; color: var(--muted); opacity: .7; }
+    .career-banner-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.3) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.25rem 1.75rem; pointer-events: none; }
+    .career-banner-name { font-weight: 800; font-size: 1.05rem; color: #fff; margin-bottom: .25rem; }
+    .career-banner-desc { font-size: .78rem; color: rgba(255,255,255,.6); }
+    .career-body { padding: 1.5rem 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1rem; }
+    .career-item { display: flex; align-items: flex-start; gap: .75rem; padding: 1rem; background: #1C2128; border-radius: 10px; border: 1px solid var(--border); }
+    .ci-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: .05rem; }
+    .ci-title { font-size: .88rem; font-weight: 700; color: var(--dark); margin-bottom: .2rem; }
+    .ci-desc { font-size: .78rem; color: var(--muted); line-height: 1.6; }
+    .ci-tag { display: inline-block; margin-top: .4rem; padding: .12rem .5rem; border-radius: 4px; font-size: .67rem; font-weight: 700; background: var(--indigo-dim); color: var(--indigo); }
+
+    /* EDUCATION */
+    .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.25rem; }
+    .edu-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem 1.75rem; box-shadow: 0 1px 4px rgba(0,0,0,.3); display: flex; gap: 1.1rem; align-items: flex-start; }
+    .edu-icon-wrap { width: 42px; height: 42px; background: var(--indigo-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .edu-school { font-size: 1.05rem; font-weight: 800; color: var(--dark); margin-bottom: .2rem; }
+    .edu-major { font-size: .85rem; color: var(--indigo); font-weight: 600; margin-bottom: .3rem; }
+    .edu-period { font-size: .78rem; color: var(--muted); }
+    .edu-status { display: inline-block; margin-top: .5rem; padding: .15rem .55rem; border-radius: 5px; font-size: .7rem; font-weight: 700; }
+    .edu-graduated { background: rgba(34,197,94,.15); color: #4ADE80; }
+    .edu-enrolled  { background: var(--indigo-dim); color: var(--indigo); }
+
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; }
+    .skill-box { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.35rem; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+    .sb-title { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--indigo); margin-bottom: .875rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .stag { background: #1C2128; border: 1px solid var(--border); border-radius: 100px; padding: .25rem .75rem; font-size: .76rem; color: var(--mid); }
+
+    /* CONTACT */
+    #contact-section { background: #080B10; color: #fff; padding: 7rem 3rem; text-align: center; position: relative; overflow: hidden; border-top: 1px solid var(--border); }
+    .contact-glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 50% 120%, rgba(129,140,248,.25) 0%, transparent 65%); pointer-events: none; }
+    .contact-inner { position: relative; max-width: 600px; margin: 0 auto; }
+    .contact-eye { display: flex; align-items: center; justify-content: center; gap: .6rem; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--indigo-lt); margin-bottom: 1.25rem; }
+    .contact-eye::before, .contact-eye::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: rgba(255,255,255,.1); }
+    .contact-title { font-size: clamp(2.2rem,5vw,3.5rem); font-weight: 900; letter-spacing: -.04em; margin-bottom: 1rem; }
+    .contact-desc { color: rgba(255,255,255,.45); line-height: 1.75; margin-bottom: 2.25rem; white-space: pre-line; }
+    .contact-email { display: inline-block; font-size: 1.1rem; font-weight: 700; color: var(--indigo-lt); text-decoration: none; border-bottom: 2px solid rgba(165,180,252,.3); padding-bottom: .2rem; transition: border-color .2s; }
+    .contact-email:hover { border-color: var(--indigo-lt); }
+    .contact-phone { margin-top: .75rem; font-size: .88rem; color: rgba(255,255,255,.35); }
+
+    footer { background: #05070C; text-align: center; padding: 1.75rem 2rem; font-size: .76rem; color: rgba(255,255,255,.2); border-top: 1px solid rgba(255,255,255,.05); }
+
+    /* FADE */
+    .fade { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .fade.in { opacity: 1; transform: none; }
+    .fd1 { transition-delay: .1s; } .fd2 { transition-delay: .2s; } .fd3 { transition-delay: .3s; }
+
+    @media (max-width: 1100px) {
+      .hero-inner { grid-template-columns: 1fr clamp(260px, 28vw, 360px); }
+    }
+    @media (max-width: 900px) {
+      .hero-inner, .proj-grid { grid-template-columns: 1fr; }
+      .hero-right { flex-direction: row; flex-wrap: wrap; }
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 600px) {
+      nav { padding: .875rem 1.5rem; } nav .nav-links { display: none; }
+      .section { padding: 4rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      #stats { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 로딩 스피너 -->
+<div id="page-loader" style="display:flex;position:fixed;inset:0;background:rgba(13,17,23,.97);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .3s;">
+  <div style="width:36px;height:36px;border:3px solid #21262D;border-top-color:#818CF8;border-radius:50%;animation:spin .8s linear infinite;"></div>
+  <p id="loader-msg" style="font-size:.88rem;color:#8B949E;text-align:center;line-height:1.6;">데이터 불러오는 중...</p>
+</div>
+
+<nav>
+  <div class="nav-logo">SH<em>.</em></div>
+  <ul class="nav-links">
+    <li><a href="#projects">프로젝트</a></li>
+    <li><a href="#career">경력</a></li>
+    <li><a href="#education">학력</a></li>
+    <li><a href="#skills">스킬</a></li>
+    <li><a href="#contact-section">연락</a></li>
+  </ul>
+</nav>
+
+<!-- 페이지 컨테이너: JS가 채워줍니다 -->
+<div id="hero"></div>
+<div id="stats"></div>
+<div id="projects"></div>
+<div id="career"></div>
+<div id="education"></div>
+<div id="skills"></div>
+<div id="contact-section"></div>
+<footer id="footer"></footer>
+
+<script>
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║               DATA LOADING (JSON fetch)                      ║
+   ║  내용 수정 → data/ 폴더의 JSON 파일을 열어 수정하세요.       ║
+   ║  · 프로젝트 추가/수정  →  data/projects.json                 ║
+   ║  · 경력 추가/수정      →  data/careers.json                  ║
+   ║  · 개인정보·스탯 등    →  data/config.json                   ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+let DATA = null;
+
+async function loadData() {
+  const load = url => fetch(url).then(r => {
+    if (!r.ok) throw new Error(`${url} → HTTP ${r.status}`);
+    return r.json();
+  });
+  const [projects, careers, config] = await Promise.all([
+    load('data/projects.json'),
+    load('data/careers.json'),
+    load('data/config.json'),
+  ]);
+  DATA = { ...config, projects, careers };
+}
+
+// ← DATA 객체 제거됨. 내용은 data/ 폴더의 JSON 파일에서 관리합니다.
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║               RENDER ENGINE (수정 불필요)                    ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── 날짜 유틸 ──────────────────────────────────────────────── */
+function parseDateStr(str) {
+  const [y, m, d] = str.split('-').map(Number);
+  return new Date(y, (m || 1) - 1, d || 1);
+}
+function calcDuration(startStr, endStr) {
+  const s = parseDateStr(startStr);
+  const e = endStr ? parseDateStr(endStr) : new Date();
+  let years = e.getFullYear() - s.getFullYear();
+  let months = e.getMonth() - s.getMonth();
+  if (e.getDate() < s.getDate()) months--;
+  if (months < 0) { years--; months += 12; }
+  if (years > 0) return `약 ${years}년 ${months}개월`;
+  return `약 ${months}개월`;
+}
+function careerYear(startStr) {
+  return new Date().getFullYear() - parseDateStr(startStr).getFullYear() + 1;
+}
+function fmtDate(str) {
+  if (!str) return "현재";
+  const [y, m] = str.split('-');
+  return m ? `${y}.${m.padStart(2,'0')}` : y;
+}
+
+/* ── 슬라이더 HTML ──────────────────────────────────────────── */
+function sliderHTML(images, alt) {
+  if (!images || images.length === 0) {
+    return `<div class="slider"><div class="slider-placeholder">
+      <div class="slider-placeholder-icon">📸</div>
+      <div class="slider-placeholder-txt">이미지를 추가해주세요</div>
+    </div></div>`;
+  }
+  const slides = images.map((src, i) =>
+    `<img class="slide${i===0?' active':''}" src="${src}" alt="${alt} ${i+1}">`
+  ).join('');
+  const dots = images.length > 1 ? `<div class="slider-dots">
+    ${images.map((_,i)=>`<span class="sdot${i===0?' active':''}" data-i="${i}"></span>`).join('')}
+  </div>
+  <div class="slider-arrows">
+    <button class="sarrow" data-dir="-1">‹</button>
+    <button class="sarrow" data-dir="1">›</button>
+  </div>` : '';
+  return `<div class="slider">${slides}${dots}</div>`;
+}
+
+/* ── RENDER HERO ─────────────────────────────────────────────── */
+function renderHero() {
+  const p = DATA.personal;
+  const dur = calcDuration(p.careerStart, null);
+  const yr  = careerYear(p.careerStart);
+  const company = DATA.careers[0] || {};
+  const currentBadge = !company.endDate
+    ? `<div class="badge-green">재직 중</div>` : '';
+  document.getElementById('hero').innerHTML = `
+  <section id="hero">
+    <div class="hero-dot-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-eyebrow">${p.role}</div>
+        <h1 class="hero-name">${p.name}</h1>
+        <p class="hero-role"><strong>${yr}년차 ${p.roleKo}</strong><br>${p.intro.replace(/\n/g,'<br>')}</p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">프로젝트 보기 ↓</a>
+          <a href="mailto:${p.email}" class="btn btn-outline">연락하기</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hic">
+          <div class="hic-label">현재 소속</div>
+          <div class="hic-value">${company.company || ''}</div>
+          <div class="hic-sub">${company.role || ''}</div>
+          ${currentBadge}
+        </div>
+        <div class="hic">
+          <div class="hic-label">재직 기간</div>
+          <div class="hic-value">${dur}</div>
+          <div class="hic-sub">${fmtDate(p.careerStart)} ~</div>
+        </div>
+        <div class="hic">
+          <div class="hic-label">담당 프로젝트</div>
+          <div class="hic-value">${(company.project||{}).name||''}</div>
+          <div class="hic-sub">${(company.project||{}).desc||''}</div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ── RENDER STATS ───────────────────────────────────────────── */
+function renderStats() {
+  const items = DATA.stats.map((s,i) => `
+    <div class="fade fd${i}">
+      <div class="stat-num"><span data-target="${s.value}">0</span><sup>${s.suffix}</sup></div>
+      <div class="stat-lbl">${s.label}</div>
+      <div class="stat-sub">${s.sub}</div>
+    </div>`).join('');
+  document.getElementById('stats').innerHTML =
+    `<div id="stats-inner"><div class="stats-inner">${items}</div></div>`;
+  document.getElementById('stats').id = 'stats-wrap';
+  document.querySelector('.stats-inner').closest('div').id = 'stats';
+}
+
+/* ── RENDER PROJECTS ────────────────────────────────────────── */
+function renderProjects() {
+  const cards = DATA.projects.map((p,i) => {
+    const metrics = p.metrics.map(m => {
+      const cls = m.color === 'amber' ? ' m-amber' : '';
+      const inner = m.label ? `${m.label} <b>${m.value}</b>` : m.value;
+      return `<span class="metric${cls}">${inner}</span>`;
+    }).join('');
+    return `
+    <a class="proj-card fade fd${i%4}" href="${p.link}" target="_blank">
+      ${sliderHTML(p.images, p.title)}
+      <div class="proj-body">
+        <span class="proj-number">${p.number}</span>
+        <span class="ptag ptag-${p.tagType}">${p.tag}</span>
+        <p class="proj-title">${p.title}</p>
+        <p class="proj-period">${p.period}</p>
+        <p class="proj-desc">${p.desc}</p>
+        <div class="proj-hr"></div>
+        <div class="proj-metrics">${metrics}</div>
+        <span class="proj-link">상세 보기 →</span>
+      </div>
+    </a>`;
+  }).join('');
+  document.getElementById('projects').innerHTML = `
+    <div class="section" id="projects-inner">
+      <p class="sec-eye fade">Featured Projects</p>
+      <h2 class="sec-title fade fd1">주요 프로젝트</h2>
+      <p class="sec-desc fade fd2">브라운더스트2에서 직접 설계하고 라이브 업데이트한 핵심 프로젝트입니다.</p>
+      <div class="proj-grid">${cards}</div>
+    </div>`;
+}
+
+/* ── RENDER CAREER ──────────────────────────────────────────── */
+function renderCareer() {
+  const cards = DATA.careers.map((c,ci) => {
+    const end = c.endDate;
+    const dur = calcDuration(c.startDate, end);
+    const badge = !end
+      ? `<span class="badge-green" style="display:inline-flex;margin-top:.3rem">재직 중</span>` : '';
+
+    // 회사 로고
+    const logo = c.companyLogo
+      ? `<img class="career-logo" src="${c.companyLogo}" alt="${c.company} 로고">`
+      : `<div class="career-logo-placeholder">🏢</div>`;
+
+    // 프로젝트 배너 이미지
+    const banner = c.projectImage
+      ? `<div class="career-banner">
+           <img src="${c.projectImage}" alt="${c.project.name}">
+           <div class="career-banner-overlay">
+             <div class="career-banner-name">${c.project.name}</div>
+             <div class="career-banner-desc">${c.project.desc}</div>
+           </div>
+         </div>`
+      : `<div class="career-banner-placeholder">
+           <div class="career-banner-placeholder-icon">🎮</div>
+           <div class="career-banner-placeholder-txt">${c.project.name} · ${c.project.desc}</div>
+         </div>`;
+
+    const highlights = c.highlights.map(h => `
+      <div class="career-item">
+        <span class="ci-icon">${h.icon}</span>
+        <div>
+          <div class="ci-title">${h.title}</div>
+          <div class="ci-desc">${h.desc}</div>
+          <span class="ci-tag">${h.tag}</span>
+        </div>
+      </div>`).join('');
+
+    return `
+    <div class="career-card fade fd${ci}">
+      <div class="career-header">
+        ${logo}
+        <div class="career-header-info">
+          <div class="career-co">${c.company}</div>
+          <div class="career-role-txt">${c.role}</div>
+          <div class="career-dates">${fmtDate(c.startDate)} ~ ${end ? fmtDate(end) : '현재'} &nbsp;·&nbsp; ${dur}</div>
+          ${badge}
+        </div>
+      </div>
+      ${banner}
+      <div class="career-body">${highlights}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('career').innerHTML = `
+    <div class="section section-bg" id="career">
+      <p class="sec-eye fade">Experience</p>
+      <h2 class="sec-title fade fd1">경력</h2>
+      <div class="career-list">${cards}</div>
+    </div>`;
+}
+
+/* ── RENDER EDUCATION ───────────────────────────────────────── */
+function renderEducation() {
+  const cards = DATA.education.map((e,i) => {
+    const statusLabel = e.status === 'graduated' ? '졸업' : '재학 중';
+    const statusCls   = e.status === 'graduated' ? 'edu-graduated' : 'edu-enrolled';
+    return `
+    <div class="edu-card fade fd${i}">
+      <div class="edu-icon-wrap">🎓</div>
+      <div>
+        <div class="edu-school">${e.school}</div>
+        <div class="edu-major">${e.major} · ${e.degree}</div>
+        <div class="edu-period">${fmtDate(e.startDate)} ~ ${fmtDate(e.endDate)}</div>
+        <span class="edu-status ${statusCls}">${statusLabel}</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('education').innerHTML = `
+    <div class="section" id="education">
+      <p class="sec-eye fade">Education</p>
+      <h2 class="sec-title fade fd1">학력</h2>
+      <div class="edu-grid">${cards}</div>
+    </div>`;
+}
+
+/* ── RENDER SKILLS ──────────────────────────────────────────── */
+function renderSkills() {
+  const boxes = DATA.skills.map((s,i) => {
+    const tags = s.items.map(t => `<span class="stag">${t}</span>`).join('');
+    return `<div class="skill-box fade fd${i%4}"><div class="sb-title">${s.category}</div><div class="skill-tags">${tags}</div></div>`;
+  }).join('');
+  document.getElementById('skills').innerHTML = `
+    <div class="section section-bg" id="skills">
+      <p class="sec-eye fade">Skills & Tools</p>
+      <h2 class="sec-title fade fd1">보유 기술</h2>
+      <div class="skills-grid">${boxes}</div>
+    </div>`;
+}
+
+/* ── RENDER CONTACT ─────────────────────────────────────────── */
+function renderContact() {
+  const p = DATA.personal;
+  document.getElementById('contact-section').innerHTML = `
+    <div class="contact-glow"></div>
+    <div class="contact-inner fade">
+      <div class="contact-eye">Get in Touch</div>
+      <h2 class="contact-title">${p.contactTitle}</h2>
+      <p class="contact-desc">${p.contactDesc}</p>
+      <a href="mailto:${p.email}" class="contact-email">${p.email}</a>
+      <p class="contact-phone">📱 ${p.phone}</p>
+    </div>`;
+}
+
+/* ── RENDER FOOTER ──────────────────────────────────────────── */
+function renderFooter() {
+  document.getElementById('footer').innerHTML =
+    `© ${new Date().getFullYear()} ${DATA.personal.name} &nbsp;·&nbsp; 본 페이지의 모든 성과 지표는 대외비 보안을 위해 비식별화 및 재구성한 샘플 데이터입니다.`;
+}
+
+/* ── INIT SLIDERS ───────────────────────────────────────────── */
+function initSliders() {
+  document.querySelectorAll('.slider').forEach(slider => {
+    const slides = [...slider.querySelectorAll('.slide')];
+    const dots   = [...slider.querySelectorAll('.sdot')];
+    if (slides.length <= 1) return;
+
+    let cur = 0, timer = null;
+
+    const goTo = n => {
+      slides[cur].classList.remove('active');
+      dots[cur]?.classList.remove('active');
+      cur = (n + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dots[cur]?.classList.add('active');
+    };
+
+    const start = () => { timer = setInterval(() => goTo(cur + 1), 3500); };
+    const stop  = () => clearInterval(timer);
+
+    start();
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+    dots.forEach(d => d.addEventListener('click', () => { stop(); goTo(+d.dataset.i); start(); }));
+    slider.querySelectorAll('.sarrow').forEach(a =>
+      a.addEventListener('click', e => { e.preventDefault(); stop(); goTo(cur + +a.dataset.dir); start(); })
+    );
+  });
+}
+
+/* ── SCROLL FADE ────────────────────────────────────────────── */
+function initFade() {
+  const io = new IntersectionObserver(
+    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+}
+
+/* ── COUNTER ────────────────────────────────────────────────── */
+function initCounters() {
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll('[data-target]').forEach(el => {
+        const target = +el.dataset.target, t0 = performance.now();
+        const tick = now => {
+          const p = Math.min((now - t0) / 1400, 1);
+          el.textContent = Math.round((1 - Math.pow(1-p, 3)) * target);
+          if (p < 1) requestAnimationFrame(tick); else el.textContent = target;
+        };
+        requestAnimationFrame(tick);
+      });
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.3 });
+  const statsEl = document.querySelector('.stats-inner');
+  if (statsEl) io.observe(statsEl);
+}
+
+/* ── BOOT ───────────────────────────────────────────────────── */
+async function boot() {
+  const loader = document.getElementById('page-loader');
+  const msg    = document.getElementById('loader-msg');
+  try {
+    await loadData();
+    renderHero(); renderStats(); renderProjects(); renderCareer();
+    renderEducation(); renderSkills(); renderContact(); renderFooter();
+    initSliders(); initFade(); initCounters();
+    loader.style.opacity = '0';
+    setTimeout(() => loader.style.display = 'none', 300);
+  } catch (err) {
+    msg.innerHTML =
+      '⚠️ <strong>데이터 파일을 불러올 수 없습니다.</strong><br><br>' +
+      'Live Server(포트 5500)로 열어주세요.<br>' +
+      '<span style="font-size:.78rem;color:#8B949E">파일을 직접 더블클릭하면 fetch가 동작하지 않습니다.</span>';
+    console.error(err);
+  }
+}
+boot();
+</script>
+</body>
+</html>

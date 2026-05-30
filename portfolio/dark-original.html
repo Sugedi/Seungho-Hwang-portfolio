@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>황승호 · 게임 시스템 기획자 [Dark Original]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #1068DE; --blue-lt: #4d96ff; --blue-dim: rgba(16,104,222,0.12);
+      --dark: #0D1117; --card: #161B22; --card2: #1c2230;
+      --border: #21262d; --text: #e6edf3; --muted: #8b949e;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--text); font-family: 'Noto Sans KR', system-ui, sans-serif; line-height: 1.6; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: .875rem 2.5rem;
+      background: rgba(13,17,23,.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo { font-weight: 800; font-size: 1rem; letter-spacing: -.02em; }
+    .nav-logo span { color: var(--blue); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .85rem; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 2rem 5rem; position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(16,104,222,.3) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(16,104,222,.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(16,104,222,.04) 1px, transparent 1px);
+      background-size: 64px 64px; pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 820px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(16,104,222,.12); border: 1px solid rgba(16,104,222,.3);
+      border-radius: 100px; padding: .35rem 1rem;
+      font-size: .78rem; color: var(--blue-lt); font-weight: 600; margin-bottom: 1.75rem;
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px; background: #22c55e; border-radius: 50%;
+      animation: blink 2.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    .hero-name {
+      font-size: clamp(3.2rem, 9vw, 6rem); font-weight: 900;
+      letter-spacing: -.05em; line-height: 1;
+      background: linear-gradient(160deg, #ffffff 30%, rgba(255,255,255,.55));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: .75rem;
+    }
+    .hero-role {
+      font-size: clamp(1rem, 2.5vw, 1.35rem); color: var(--blue-lt);
+      font-weight: 500; letter-spacing: .08em; margin-bottom: 1.5rem;
+    }
+    .hero-desc { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.75; }
+    .hero-cta { display: flex; gap: .875rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      padding: .75rem 1.75rem; border-radius: 8px; font-size: .875rem;
+      font-weight: 700; text-decoration: none; transition: all .22s; display: inline-flex; align-items: center; gap: .4rem;
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: var(--blue-lt); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(16,104,222,.35); }
+    .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue-lt); transform: translateY(-2px); }
+
+    /* ── STATS BAR ── */
+    #stats {
+      background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 2.75rem 2rem;
+    }
+    .stats-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; text-align: center; }
+    .stat-num { font-size: 2.6rem; font-weight: 900; color: var(--blue-lt); letter-spacing: -.05em; line-height: 1; }
+    .stat-lbl { font-size: .78rem; color: var(--muted); margin-top: .3rem; font-weight: 500; }
+    .stat-sub { font-size: .68rem; color: rgba(139,148,158,.6); margin-top: .15rem; }
+
+    /* ── SHARED SECTION ── */
+    .section { padding: 5.5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .sec-tag { font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--blue); margin-bottom: .6rem; }
+    .sec-title { font-size: clamp(1.7rem,4vw,2.4rem); font-weight: 800; letter-spacing: -.035em; color: #fff; margin-bottom: .875rem; }
+    .sec-desc { color: var(--muted); font-size: .95rem; max-width: 500px; line-height: 1.75; margin-bottom: 2.75rem; }
+    .divider { width: 40px; height: 3px; background: linear-gradient(90deg, var(--blue), var(--blue-lt)); border-radius: 2px; margin-bottom: 2rem; }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.25rem; }
+    .proj-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.75rem; text-decoration: none; color: inherit;
+      transition: all .3s; position: relative; overflow: hidden; cursor: pointer; display: block;
+    }
+    .proj-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(16,104,222,.06) 0%, transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .proj-card:hover { border-color: rgba(16,104,222,.5); transform: translateY(-5px); box-shadow: 0 16px 48px rgba(16,104,222,.14); }
+    .proj-card:hover::after { opacity: 1; }
+    .proj-top-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-lt));
+      transform: scaleX(0); transform-origin: left; transition: transform .3s;
+    }
+    .proj-card:hover .proj-top-bar { transform: scaleX(1); }
+    .proj-tag {
+      display: inline-block; padding: .2rem .65rem; border-radius: 5px;
+      font-size: .7rem; font-weight: 700; margin-bottom: 1rem;
+    }
+    .t-content { background: rgba(16,104,222,.15); color: var(--blue-lt); }
+    .t-bm      { background: rgba(34,197,94,.14);  color: #4ade80; }
+    .t-system  { background: rgba(168,85,247,.14);  color: #c084fc; }
+    .proj-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: .35rem; letter-spacing: -.02em; }
+    .proj-period { font-size: .75rem; color: var(--muted); margin-bottom: .875rem; }
+    .proj-desc { font-size: .86rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.25rem; }
+    .proj-metrics { display: flex; flex-wrap: wrap; gap: .45rem; }
+    .metric {
+      background: rgba(255,255,255,.04); border: 1px solid var(--border);
+      border-radius: 6px; padding: .22rem .6rem; font-size: .72rem; color: var(--muted);
+    }
+    .metric b { color: var(--blue-lt); }
+    .proj-arrow { position: absolute; bottom: 1.6rem; right: 1.6rem; font-size: 1rem; color: var(--blue); transition: transform .2s; }
+    .proj-card:hover .proj-arrow { transform: translate(4px,-4px); }
+
+    /* ── CAREER ── */
+    .career-wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1.5rem; align-items: start; }
+    .career-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; }
+    .career-co { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: .2rem; }
+    .career-role { font-size: .85rem; color: var(--blue-lt); font-weight: 600; margin-bottom: .2rem; }
+    .career-period { font-size: .78rem; color: var(--muted); margin-bottom: 1.25rem; }
+    .career-badge {
+      display: inline-block; background: rgba(34,197,94,.14); border: 1px solid rgba(34,197,94,.3);
+      color: #4ade80; border-radius: 6px; padding: .18rem .6rem; font-size: .72rem; font-weight: 700; margin-bottom: 1rem;
+    }
+    .career-proj-box {
+      background: rgba(16,104,222,.08); border: 1px solid rgba(16,104,222,.2);
+      border-radius: 10px; padding: 1rem; margin-bottom: 1rem;
+    }
+    .career-proj-name { font-weight: 700; color: #fff; font-size: .9rem; margin-bottom: .2rem; }
+    .career-proj-desc { font-size: .8rem; color: var(--muted); }
+    .career-items { display: flex; flex-direction: column; gap: .7rem; }
+    .career-item { display: flex; align-items: flex-start; gap: .75rem; padding: .875rem; background: var(--card2); border-radius: 10px; border: 1px solid var(--border); }
+    .career-item-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: .05rem; }
+    .career-item-title { font-size: .88rem; font-weight: 700; color: #fff; margin-bottom: .15rem; }
+    .career-item-desc { font-size: .78rem; color: var(--muted); }
+
+    /* ── SKILLS ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); gap: 1rem; }
+    .skill-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+    .skill-box-title { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--blue); margin-bottom: .75rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .stag { background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 6px; padding: .2rem .6rem; font-size: .76rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { text-align: center; padding: 6rem 2rem; position: relative; overflow: hidden; }
+    .contact-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 110%, rgba(16,104,222,.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .contact-inner { position: relative; max-width: 600px; margin: 0 auto; }
+    .contact-title { font-size: clamp(2rem,5vw,3rem); font-weight: 900; letter-spacing: -.04em; color: #fff; margin-bottom: 1rem; }
+    .contact-desc { color: var(--muted); line-height: 1.75; margin-bottom: 2.25rem; }
+    .contact-email {
+      font-size: 1.1rem; font-weight: 700; color: var(--blue-lt); text-decoration: none;
+      border-bottom: 2px solid rgba(77,150,255,.3); padding-bottom: .15rem; transition: all .2s;
+    }
+    .contact-email:hover { border-color: var(--blue-lt); }
+
+    /* ── FOOTER ── */
+    footer { text-align: center; padding: 1.75rem 2rem; border-top: 1px solid var(--border); font-size: .78rem; color: var(--muted); }
+
+    /* ── SCROLL ANIMATION ── */
+    .fade { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+    .fade.in { opacity: 1; transform: none; }
+    .fade-d1 { transition-delay: .1s; }
+    .fade-d2 { transition-delay: .2s; }
+    .fade-d3 { transition-delay: .3s; }
+
+    @media (max-width: 768px) {
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+      .career-wrap { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+    }
+    @media (max-width: 480px) {
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SH<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#projects">프로젝트</a></li>
+    <li><a href="#career">경력</a></li>
+    <li><a href="#skills">보유 기술</a></li>
+    <li><a href="#contact">연락</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      겜프스엔 (GAMFS N) · 재직 중
+    </div>
+    <h1 class="hero-name">황승호</h1>
+    <p class="hero-role">GAME SYSTEM DESIGNER</p>
+    <p class="hero-desc">
+      모바일 라이브 서비스 게임에서 신규 콘텐츠·BM·UX 시스템을 전담 설계한 3년차 게임 시스템 기획자.
+      0→1 설계부터 라이브 운영까지 전 주기를 경험했습니다.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">프로젝트 보기 ↓</a>
+      <a href="mailto:happy981215@naver.com" class="btn btn-ghost">연락하기</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stats-inner">
+    <div class="fade">
+      <div class="stat-num" data-target="20">0</div>
+      <div class="stat-lbl">라이브 업데이트+</div>
+      <div class="stat-sub">점검 포함 전체</div>
+    </div>
+    <div class="fade fade-d1">
+      <div class="stat-num" data-target="30">0</div>
+      <div class="stat-lbl">편의성 개선+</div>
+      <div class="stat-sub">UX 개선 항목</div>
+    </div>
+    <div class="fade fade-d2">
+      <div class="stat-num" data-target="34">0</div>
+      <div class="stat-lbl">% 매출 기여</div>
+      <div class="stat-sub">프레스티지 스킨 기간</div>
+    </div>
+    <div class="fade fade-d3">
+      <div class="stat-num" data-target="5">0</div>
+      <div class="stat-lbl">BM 신규 설계+</div>
+      <div class="stat-sub">가챠·패스·스킨 등</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="section" id="projects">
+  <p class="sec-tag fade">Featured Projects</p>
+  <h2 class="sec-title fade fade-d1">주요 프로젝트</h2>
+  <p class="sec-desc fade fade-d2">브라운더스트2 라이브 서비스에서 직접 설계하고 업데이트한 주요 기획 성과물입니다.</p>
+
+  <div class="projects-grid">
+
+    <a class="proj-card fade" href="https://www.notion.so/370cca12009c81cc8340d18f8ea5f8e1" target="_blank">
+      <div class="proj-top-bar"></div>
+      <span class="proj-tag t-content">콘텐츠 기획</span>
+      <p class="proj-title">판도라 이스케이프</p>
+      <p class="proj-period">2024.09 · M2.0</p>
+      <p class="proj-desc">
+        캐릭터 스탯 연동 업그레이드·시간 제한 챌린지·랭킹 경쟁 구조를 포함한
+        미니게임형 신규 콘텐츠 0→1 기획.
+      </p>
+      <div class="proj-metrics">
+        <span class="metric">플레이 <b>수백만 회</b></span>
+        <span class="metric">1인 일평균 <b>33분</b></span>
+        <span class="metric">상시화 전환</span>
+        <span class="metric">스탠드얼론 제안</span>
+      </div>
+      <span class="proj-arrow">↗</span>
+    </a>
+
+    <a class="proj-card fade fade-d1" href="https://www.notion.so/370cca12009c8134a6b8ecb79ed90ca9" target="_blank">
+      <div class="proj-top-bar"></div>
+      <span class="proj-tag t-content">생활형 콘텐츠</span>
+      <p class="proj-title">낚시 / 수족관</p>
+      <p class="proj-period">M5.12 · 생활형 콘텐츠 신호탄</p>
+      <p class="proj-desc">
+        낚싯대 15종(6스탯)·어종 70여 종·맵 5개·통발·수족관 감상 등
+        생활형 콘텐츠 전 시스템 기획.
+      </p>
+      <div class="proj-metrics">
+        <span class="metric">첫날 AU <b>30%</b> 참여</span>
+        <span class="metric">최고 <b>80%</b> 참여율</span>
+        <span class="metric">일일 루틴 안착</span>
+      </div>
+      <span class="proj-arrow">↗</span>
+    </a>
+
+    <a class="proj-card fade fade-d2" href="https://www.notion.so/370cca12009c81a3bb44e6fd7835b385" target="_blank">
+      <div class="proj-top-bar"></div>
+      <span class="proj-tag t-bm">BM 기획</span>
+      <p class="proj-title">프레스티지 스킨 행운 뽑기</p>
+      <p class="proj-period">2025.05 · M5.6</p>
+      <p class="proj-desc">
+        프리미엄 코스튬 + 행운 보장형 유료 뽑기 구조 설계.
+        전 유저층 소구 포인트를 설계해 당해 최고 매출 달성.
+      </p>
+      <div class="proj-metrics">
+        <span class="metric">당해 <b>최고 매출</b></span>
+        <span class="metric">스킨 기간 매출 <b>34%</b></span>
+        <span class="metric">정기 시즌 정착</span>
+      </div>
+      <span class="proj-arrow">↗</span>
+    </a>
+
+    <a class="proj-card fade fade-d3" href="https://www.notion.so/370cca12009c816b857cd327645262ad" target="_blank">
+      <div class="proj-top-bar"></div>
+      <span class="proj-tag t-bm">BM 기획</span>
+      <p class="proj-title">스텝업 뽑기</p>
+      <p class="proj-period">2024.05 · M1.3</p>
+      <p class="proj-desc">
+        단계별 확률 보정 구조로 유저 심리 기반의 소비 동선을 설계.
+        누적 재화를 효과적으로 소각하고 추가 구매 수요를 창출.
+      </p>
+      <div class="proj-metrics">
+        <span class="metric">유료 재화 <b>70%</b> 소각</span>
+        <span class="metric">매 업데이트 매출 <b>30%</b></span>
+      </div>
+      <span class="proj-arrow">↗</span>
+    </a>
+
+  </div>
+</div>
+
+<!-- CAREER -->
+<div class="section" id="career" style="background: linear-gradient(180deg, transparent, rgba(16,104,222,.03) 50%, transparent); max-width: 100%; padding-left: 0; padding-right: 0;">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem;">
+    <p class="sec-tag fade">Experience</p>
+    <h2 class="sec-title fade fade-d1">경력 개요</h2>
+    <div class="divider fade fade-d2"></div>
+
+    <div class="career-wrap">
+      <div class="career-card fade">
+        <div class="career-co">겜프스엔 (GAMFS N)</div>
+        <div class="career-role">시스템 기획팀 · 사원</div>
+        <div class="career-period">2024.04 ~ 현재 &nbsp;·&nbsp; 재직 약 2년 2개월 (3년차)</div>
+        <span class="career-badge">✓ 재직 중</span>
+        <div class="career-proj-box">
+          <div class="career-proj-name">🎮 브라운더스트2</div>
+          <div class="career-proj-desc">서브컬쳐 수집형 모바일 RPG · 글로벌 라이브 서비스<br>시스템 기획 · BM 설계 · 콘텐츠 기획 담당</div>
+        </div>
+        <div style="font-size:.78rem; color:var(--muted); line-height:1.7;">
+          📚 세종대학교 법학과 · 2023.08 졸업
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:.75rem;">
+        <div class="career-item fade fade-d1">
+          <span class="career-item-icon">🎯</span>
+          <div>
+            <div class="career-item-title">신규 콘텐츠 시스템 기획</div>
+            <div class="career-item-desc">판도라 이스케이프, 낚시/수족관 등 생활형·경쟁형 콘텐츠 0→1 설계</div>
+          </div>
+        </div>
+        <div class="career-item fade fade-d2">
+          <span class="career-item-icon">💰</span>
+          <div>
+            <div class="career-item-title">BM 시스템 설계</div>
+            <div class="career-item-desc">스텝업 가챠·패스·행운뽑기·프레스티지 스킨 등 5종+ 신규 BM 설계</div>
+          </div>
+        </div>
+        <div class="career-item fade fade-d3">
+          <span class="career-item-icon">🛠</span>
+          <div>
+            <div class="career-item-title">UX / 편의성 개선</div>
+            <div class="career-item-desc">30개+ 편의성 개선 항목 주도, 기획 세팅 자동화 및 운영툴 기능 개선</div>
+          </div>
+        </div>
+        <div class="career-item fade">
+          <span class="career-item-icon">📡</span>
+          <div>
+            <div class="career-item-title">라이브 서비스 운영</div>
+            <div class="career-item-desc">20회+ 라이브 업데이트, 무직전생·섬란카구라 IP 콜라보 검수·세팅</div>
+          </div>
+        </div>
+        <div class="career-item fade fade-d1">
+          <span class="career-item-icon">🏆</span>
+          <div>
+            <div class="career-item-title">밸런싱 & 경제 설계</div>
+            <div class="career-item-desc">시즌이벤트 보상 설계, 재화 경제 밸런스 조정, 1·2주년 업데이트 세팅</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="section" id="skills">
+  <p class="sec-tag fade">Skills & Tools</p>
+  <h2 class="sec-title fade fade-d1">보유 기술</h2>
+  <div class="divider fade fade-d2"></div>
+  <div class="skills-grid">
+    <div class="skill-box fade">
+      <div class="skill-box-title">시스템 기획</div>
+      <div class="skill-tags">
+        <span class="stag">콘텐츠 설계</span><span class="stag">BM 설계</span>
+        <span class="stag">경제 밸런싱</span><span class="stag">가챠 시스템</span>
+        <span class="stag">성장 시스템</span>
+      </div>
+    </div>
+    <div class="skill-box fade fade-d1">
+      <div class="skill-box-title">UX / 편의성</div>
+      <div class="skill-tags">
+        <span class="stag">UI 기획</span><span class="stag">UX 플로우</span>
+        <span class="stag">접근성 설계</span><span class="stag">와이어프레임</span>
+      </div>
+    </div>
+    <div class="skill-box fade fade-d2">
+      <div class="skill-box-title">툴 & 문서</div>
+      <div class="skill-tags">
+        <span class="stag">Excel (확률 시뮬)</span><span class="stag">Google Sheets</span>
+        <span class="stag">Jira</span><span class="stag">Confluence</span><span class="stag">Notion</span>
+      </div>
+    </div>
+    <div class="skill-box fade fade-d3">
+      <div class="skill-box-title">라이브 운영</div>
+      <div class="skill-tags">
+        <span class="stag">업데이트 세팅</span><span class="stag">IP 콜라보</span>
+        <span class="stag">이벤트 설계</span><span class="stag">운영툴 관리</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="contact-inner fade">
+    <h2 class="contact-title">함께 만들어요.</h2>
+    <p class="contact-desc">새로운 시스템을 함께 설계할 팀을 찾고 있습니다.<br>언제든지 편하게 연락해 주세요.</p>
+    <a href="mailto:happy981215@naver.com" class="contact-email">happy981215@naver.com</a>
+    <br><br>
+    <p style="font-size:.82rem; color:var(--muted);">📱 010-8858-2659</p>
+  </div>
+</section>
+
+<footer>
+  © 2025 황승호 · 본 페이지의 모든 성과 지표는 대외비 보안을 위해 비식별화 및 재구성한 샘플 데이터입니다.
+</footer>
+
+<script>
+  // ── Intersection Observer (fade in)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+  // ── Counter animation
+  function animateCount(el) {
+    const target = +el.dataset.target;
+    const duration = 1400;
+    const start = performance.now();
+    const run = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(ease * target);
+      if (p < 1) requestAnimationFrame(run);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(run);
+  }
+
+  const statsObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('[data-target]').forEach(animateCount);
+        statsObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  statsObs.observe(document.getElementById('stats'));
+</script>
+</body>
+</html>
