@@ -10,7 +10,7 @@
         "name": "브라운더스트2",
         "icon": "🎮",
         "desc": "서브컬쳐 수집형 모바일 RPG · 글로벌 라이브 서비스",
-        "image": "data/images/logo_GAMSF-N.png",
+        "image": "data/images/banner_Browndust2.png",
         "tasks": [
           { "icon": "🎯", "title": "신규 컨텐츠 / 시스템 기획", "desc": "판도라 이스케이프, 낚시, 프레스티지 스킨 설계", "tag": "컨텐츠 / 시스템" },
           { "icon": "💰", "title": "수익화 상품 시스템 설계",   "desc": "스텝업 뽑기·유료 패스·스킨 행운 뽑기 등 신규 BM 설계, 최고 매출 달성", "tag": "BM" },
