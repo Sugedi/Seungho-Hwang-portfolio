@@ -14,7 +14,7 @@
       --dark:      #F0F6FC; --mid:       #C9D1D9; --muted:      #8B949E;
       --border:    #21262D; --bg:        #0D1117; --white:      #161B22;
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; font-size: 17px; }
     body { background: var(--bg); color: var(--dark); font-family: 'Noto Sans KR', system-ui, sans-serif; line-height: 1.6; overflow-x: hidden; }
 
     /* NAV */
@@ -77,6 +77,10 @@
     .slider-dots { position: absolute; bottom: .75rem; left: 50%; transform: translateX(-50%); display: flex; gap: .4rem; z-index: 2; }
     .sdot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.35); cursor: pointer; transition: all .25s; }
     .sdot.active { background: white; width: 18px; border-radius: 3px; }
+    .slider-arrows { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 .5rem; opacity: 0; transition: opacity .2s; }
+    .slider:hover .slider-arrows { opacity: 1; }
+    .sarrow { background: rgba(0,0,0,.5); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .sarrow:hover { background: rgba(0,0,0,.75); }
 
     /* PROJECT CARDS */
     .proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
@@ -287,6 +291,10 @@ function sliderHTML(images, alt) {
   ).join('');
   const dots = images.length > 1 ? `<div class="slider-dots">
     ${images.map((_,i)=>`<span class="sdot${i===0?' active':''}" data-i="${i}"></span>`).join('')}
+  </div>
+  <div class="slider-arrows">
+    <button class="sarrow" data-dir="-1">‹</button>
+    <button class="sarrow" data-dir="1">›</button>
   </div>` : '';
   return `<div class="slider">${slides}${dots}</div>`;
 }
@@ -515,29 +523,37 @@ function renderFooter() {
 
 /* ── INIT SLIDERS ───────────────────────────────────────────── */
 function initSliders() {
+  const pool = [];
+
   document.querySelectorAll('.slider').forEach(slider => {
     const slides = [...slider.querySelectorAll('.slide')];
     const dots   = [...slider.querySelectorAll('.sdot')];
     if (slides.length <= 1) return;
 
-    let cur = 0, timer = null;
+    const s = { cur: 0, paused: false };
 
     const goTo = n => {
-      slides[cur].classList.remove('active');
-      dots[cur]?.classList.remove('active');
-      cur = (n + slides.length) % slides.length;
-      slides[cur].classList.add('active');
-      dots[cur]?.classList.add('active');
+      slides[s.cur].classList.remove('active');
+      dots[s.cur]?.classList.remove('active');
+      s.cur = (n + slides.length) % slides.length;
+      slides[s.cur].classList.add('active');
+      dots[s.cur]?.classList.add('active');
     };
 
-    const start = () => { timer = setInterval(() => goTo(cur + 1), 2500); };
-    const stop  = () => clearInterval(timer);
+    slider.addEventListener('mouseenter', () => s.paused = true);
+    slider.addEventListener('mouseleave', () => s.paused = false);
+    dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.i); }));
+    slider.querySelectorAll('.sarrow').forEach(a =>
+      a.addEventListener('click', e => { e.preventDefault(); goTo(s.cur + +a.dataset.dir); })
+    );
 
-    start();
-    slider.addEventListener('mouseenter', stop);
-    slider.addEventListener('mouseleave', start);
-    dots.forEach(d => d.addEventListener('click', () => { stop(); goTo(+d.dataset.i); start(); }));
+    pool.push({ s, goTo });
   });
+
+  /* 전체 슬라이더 동시 전환 */
+  setInterval(() => {
+    pool.forEach(({ s, goTo }) => { if (!s.paused) goTo(s.cur + 1); });
+  }, 2500);
 }
 
 /* ── SCROLL FADE ────────────────────────────────────────────── */
