@@ -105,22 +105,23 @@
     /* CAREER */
     .career-list { display: flex; flex-direction: column; gap: 2rem; }
     .career-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+    /* 회사 헤더 */
     .career-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
     .career-logo { width: 52px; height: 52px; border-radius: 12px; object-fit: contain; background: #1C2128; border: 1px solid var(--border); padding: 5px; flex-shrink: 0; }
     .career-logo-placeholder { width: 52px; height: 52px; border-radius: 12px; background: var(--indigo-dim); border: 1px solid rgba(129,140,248,.2); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-    .career-header-info { flex: 1; }
+    .career-header-info { flex: 1; min-width: 0; }
     .career-co { font-size: 1.2rem; font-weight: 900; color: var(--dark); letter-spacing: -.03em; margin-bottom: .2rem; }
     .career-role-txt { font-size: .85rem; color: var(--indigo); font-weight: 700; margin-bottom: .15rem; }
     .career-dates { font-size: .76rem; color: var(--muted); }
-    .career-banner { position: relative; height: 200px; overflow: hidden; background: #1C2128; border-bottom: 1px solid var(--border); }
-    .career-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .career-banner-placeholder { height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #1C2128; border-bottom: 1px solid var(--border); gap: .5rem; }
-    .career-banner-placeholder-icon { font-size: 2rem; opacity: .3; }
-    .career-banner-placeholder-txt { font-size: .78rem; color: var(--muted); opacity: .7; }
-    .career-banner-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.3) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.25rem 1.75rem; pointer-events: none; }
-    .career-banner-name { font-weight: 800; font-size: 1.05rem; color: #fff; margin-bottom: .25rem; }
-    .career-banner-desc { font-size: .78rem; color: rgba(255,255,255,.6); }
-    .career-body { padding: 1.5rem 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1rem; }
+    /* 프로젝트(게임) 서브 섹션 */
+    .career-project { border-top: 1px solid var(--border); }
+    .career-project-header { padding: 1.1rem 2rem; display: flex; align-items: center; gap: 1rem; background: rgba(129,140,248,.04); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .career-project-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--indigo-dim); border: 1px solid rgba(129,140,248,.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .career-project-info { flex: 1; min-width: 0; }
+    .career-project-name { font-size: .98rem; font-weight: 800; color: var(--dark); letter-spacing: -.02em; margin-bottom: .1rem; }
+    .career-project-desc { font-size: .74rem; color: var(--muted); }
+    /* 태스크 그리드 */
+    .career-project-body { padding: 1.25rem 2rem 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1rem; }
     .career-item { display: flex; align-items: flex-start; gap: .75rem; padding: 1rem; background: #1C2128; border-radius: 10px; border: 1px solid var(--border); }
     .ci-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: .05rem; }
     .ci-title { font-size: .88rem; font-weight: 700; color: var(--dark); margin-bottom: .2rem; }
@@ -174,9 +175,13 @@
     }
     @media (max-width: 600px) {
       nav { padding: .875rem 1.5rem; } nav .nav-links { display: none; }
-      .section { padding: 4rem 1.5rem; }
-      #hero { padding: 7rem 1.5rem 4rem; }
-      #stats { padding: 2.5rem 1.5rem; }
+      .section { padding: 4rem 1.25rem; }
+      #hero { padding: 7rem 1.25rem 4rem; }
+      #stats { padding: 2.5rem 1.25rem; }
+      .career-header { padding: 1.25rem; }
+      .career-project-header { padding: 1rem 1.25rem; }
+      .career-project-body { padding: 1rem 1.25rem 1.25rem; grid-template-columns: 1fr; }
+      .career-item { padding: .875rem; }
     }
   </style>
 </head>
@@ -375,40 +380,39 @@ function renderProjects() {
 
 /* ── RENDER CAREER ──────────────────────────────────────────── */
 function renderCareer() {
-  const cards = DATA.careers.map((c,ci) => {
+  const cards = DATA.careers.map((c, ci) => {
     const end = c.endDate;
     const dur = calcDuration(c.startDate, end);
     const badge = !end
       ? `<span class="badge-green" style="display:inline-flex;margin-top:.3rem">재직 중</span>` : '';
 
-    // 회사 로고
     const logo = c.companyLogo
       ? `<img class="career-logo" src="${c.companyLogo}" alt="${c.company} 로고">`
       : `<div class="career-logo-placeholder">🏢</div>`;
 
-    // 프로젝트 배너 이미지
-    const banner = c.projectImage
-      ? `<div class="career-banner">
-           <img src="${c.projectImage}" alt="${c.project.name}">
-           <div class="career-banner-overlay">
-             <div class="career-banner-name">${c.project.name}</div>
-             <div class="career-banner-desc">${c.project.desc}</div>
-           </div>
-         </div>`
-      : `<div class="career-banner-placeholder">
-           <div class="career-banner-placeholder-icon">🎮</div>
-           <div class="career-banner-placeholder-txt">${c.project.name} · ${c.project.desc}</div>
-         </div>`;
+    const projects = (c.projects || []).map(proj => {
+      const tasks = (proj.tasks || []).map(h => `
+        <div class="career-item">
+          <span class="ci-icon">${h.icon}</span>
+          <div>
+            <div class="ci-title">${h.title}</div>
+            <div class="ci-desc">${h.desc}</div>
+            <span class="ci-tag">${h.tag}</span>
+          </div>
+        </div>`).join('');
 
-    const highlights = c.highlights.map(h => `
-      <div class="career-item">
-        <span class="ci-icon">${h.icon}</span>
-        <div>
-          <div class="ci-title">${h.title}</div>
-          <div class="ci-desc">${h.desc}</div>
-          <span class="ci-tag">${h.tag}</span>
+      return `
+      <div class="career-project">
+        <div class="career-project-header">
+          <div class="career-project-icon">${proj.icon || '🎮'}</div>
+          <div class="career-project-info">
+            <div class="career-project-name">${proj.name}</div>
+            <div class="career-project-desc">${proj.desc}</div>
+          </div>
         </div>
-      </div>`).join('');
+        <div class="career-project-body">${tasks}</div>
+      </div>`;
+    }).join('');
 
     return `
     <div class="career-card fade fd${ci}">
@@ -421,10 +425,10 @@ function renderCareer() {
           ${badge}
         </div>
       </div>
-      ${banner}
-      <div class="career-body">${highlights}</div>
+      ${projects}
     </div>`;
   }).join('');
+
   document.getElementById('career').innerHTML = `
     <div class="section section-bg" id="career">
       <p class="sec-eye fade">Experience</p>
