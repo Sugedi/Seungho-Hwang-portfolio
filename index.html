@@ -26,7 +26,7 @@
     .nav-links a:hover { color: var(--indigo); }
 
     /* HERO */
-    #hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 8rem 6vw 5rem; position: relative; overflow: hidden; background: var(--bg); }
+    #hero { display: flex; align-items: center; justify-content: center; padding: 7rem 6vw 4rem; position: relative; overflow: hidden; background: var(--bg); }
     .hero-dot-bg { display: none; }
     .hero-inner { position: relative; width: 100%; max-width: 1600px; display: grid; grid-template-columns: 1fr clamp(280px, 22vw, 420px); gap: clamp(3rem, 5vw, 7rem); align-items: center; }
     .hero-eyebrow { display: flex; align-items: center; gap: .6rem; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--indigo); margin-bottom: 1.5rem; }
@@ -51,7 +51,7 @@
     @keyframes spin  { to { transform: rotate(360deg); } }
 
     /* STATS */
-    #stats { background: #111827; padding: 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    #stats { background: #0f1520; padding: 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; text-align: center; }
     .stat-num { font-size: 3rem; font-weight: 900; color: #fff; letter-spacing: -.05em; line-height: 1; margin-bottom: .3rem; }
     .stat-num sup { font-size: 1.5rem; vertical-align: super; }
@@ -61,6 +61,7 @@
     /* SECTION */
     .section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; }
     .section-bg { background: #0f1520; }
+    #projects, #career, #education, #skills { background: #0f1520; border-top: 1px solid var(--border); }
     .sec-eye { display: flex; align-items: center; gap: .6rem; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--indigo); margin-bottom: .75rem; }
     .sec-eye::before { content: ''; width: 20px; height: 2px; background: var(--indigo); border-radius: 2px; }
     .sec-title { font-size: clamp(1.8rem,4vw,2.75rem); font-weight: 900; letter-spacing: -.04em; color: var(--dark); margin-bottom: 1rem; }
@@ -91,6 +92,7 @@
     .ptag { display: inline-block; padding: .22rem .7rem; border-radius: 5px; font-size: .7rem; font-weight: 700; margin-bottom: 1.1rem; }
     .ptag-content { background: var(--indigo-dim); color: var(--indigo); }
     .ptag-bm      { background: var(--amber-dim);  color: var(--amber); }
+    .proj-game { display: inline-flex; align-items: center; gap: .3rem; font-size: .7rem; font-weight: 600; color: var(--muted); background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 100px; padding: .18rem .65rem; margin-left: .4rem; margin-bottom: 1.1rem; }
     .proj-title { font-size: 1.2rem; font-weight: 800; color: var(--dark); margin-bottom: .3rem; letter-spacing: -.03em; }
     .proj-period { font-size: .75rem; color: var(--muted); margin-bottom: 1rem; }
     .proj-desc { font-size: .86rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.5rem; }
@@ -116,7 +118,8 @@
     /* 프로젝트(게임) 서브 섹션 */
     .career-project { border-top: 1px solid var(--border); }
     .career-project-header { padding: 1.1rem 2rem; display: flex; align-items: center; gap: 1rem; background: rgba(129,140,248,.04); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-    .career-project-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--indigo-dim); border: 1px solid rgba(129,140,248,.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .career-project-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--indigo-dim); border: 1px solid rgba(129,140,248,.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
+    .career-project-icon img { width: 100%; height: 100%; object-fit: contain; background: #fff; padding: 3px; }
     .career-project-info { flex: 1; min-width: 0; }
     .career-project-name { font-size: .98rem; font-weight: 800; color: var(--dark); letter-spacing: -.02em; margin-bottom: .1rem; }
     .career-project-desc { font-size: .74rem; color: var(--muted); }
@@ -147,7 +150,7 @@
     /* SKILLS */
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; }
     .skill-box { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.35rem; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
-    .sb-title { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--indigo); margin-bottom: .875rem; }
+    .sb-title { font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; color: var(--indigo); margin-bottom: .875rem; }
     .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
     .stag { background: #1C2128; border: 1px solid var(--border); border-radius: 100px; padding: .25rem .75rem; font-size: .76rem; color: var(--mid); }
 
@@ -364,7 +367,7 @@ function renderProjects() {
       ${sliderHTML(p.images, p.title)}
       <div class="proj-body">
         <span class="proj-number">${p.number}</span>
-        <span class="ptag ptag-${p.tagType}">${p.tag}</span>
+        <span class="ptag ptag-${p.tagType}">${p.tag}</span>${p.game ? `<span class="proj-game">🎮 ${p.game}</span>` : ''}
         <p class="proj-title">${p.title}</p>
         <p class="proj-period">${p.period}</p>
         <p class="proj-desc">${p.desc}</p>
@@ -421,7 +424,7 @@ function renderCareer() {
       return `
       <div class="career-project">
         <div class="career-project-header">
-          <div class="career-project-icon">${proj.icon || '🎮'}</div>
+          <div class="career-project-icon">${proj.gameLogo ? `<img src="${proj.gameLogo}" alt="${proj.name} 로고">` : (proj.icon || '🎮')}</div>
           <div class="career-project-info">
             <div class="career-project-name">${proj.name}</div>
             <div class="career-project-desc">${proj.desc}</div>
@@ -448,7 +451,7 @@ function renderCareer() {
   }).join('');
 
   document.getElementById('career').innerHTML = `
-    <div class="section section-bg" id="career">
+    <div class="section" id="career">
       <p class="sec-eye fade">Experience</p>
       <h2 class="sec-title fade fd1">경력</h2>
       <div class="career-list">${cards}</div>
@@ -489,7 +492,7 @@ function renderSkills() {
     return `<div class="skill-box fade fd${i%4}"><div class="sb-title">${s.category}</div><div class="skill-tags">${tags}</div></div>`;
   }).join('');
   document.getElementById('skills').innerHTML = `
-    <div class="section section-bg" id="skills">
+    <div class="section" id="skills">
       <p class="sec-eye fade">Skills & Tools</p>
       <h2 class="sec-title fade fd1">보유 기술</h2>
       <div class="skills-grid">${boxes}</div>

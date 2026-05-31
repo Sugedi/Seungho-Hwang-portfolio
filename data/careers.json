@@ -3,12 +3,13 @@
     "company": "겜프스엔 (GAMFS N)",
     "role": "시스템 기획팀 · 사원",
     "startDate": "2024-04-08",
-    "endDate": "[재직 중]",
+    "endDate": "",
     "companyLogo": "data/images/logo_GAMSF-N.png",
     "projects": [
       {
         "name": "브라운더스트2",
         "icon": "🎮",
+        "gameLogo": "data/images/logo_Brwondust2.png",
         "desc": "서브컬쳐 수집형 모바일 RPG · 글로벌 라이브 서비스",
         "image": "data/images/banner_Browndust2.png",
         "tasks": [
