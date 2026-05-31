@@ -19,8 +19,8 @@
 
     /* NAV */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,17,23,.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: .875rem 3rem; display: flex; justify-content: space-between; align-items: center; }
-    .nav-logo { font-weight: 900; font-size: .95rem; letter-spacing: .06em; }
-    .nav-logo em { font-style: normal; color: var(--indigo); }
+    .nav-logo { font-weight: 600; font-size: 1.05rem; letter-spacing: .08em; color: rgba(255,255,255,.9); }
+    .nav-logo em { font-style: normal; color: rgba(255,255,255,.35); }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a { font-size: .82rem; font-weight: 600; color: var(--muted); text-decoration: none; transition: color .2s; }
     .nav-links a:hover { color: var(--indigo); }
@@ -68,7 +68,7 @@
     .sec-desc { color: var(--muted); font-size: .95rem; line-height: 1.75; margin-bottom: 3rem; }
 
     /* IMAGE SLIDER */
-    .slider { position: relative; width: 100%; height: 280px; border-radius: 10px; overflow: hidden; background: #000; margin-bottom: 1.5rem; flex-shrink: 0; }
+    .slider { position: relative; width: 46%; min-width: 46%; height: auto; min-height: 300px; border-radius: 0; overflow: hidden; background: #000; margin-bottom: 0; flex-shrink: 0; }
     .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; opacity: 0; transition: opacity .65s ease; }
     .slide.active { opacity: 1; }
     .slider-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: .5rem; }
@@ -83,10 +83,10 @@
     .sarrow:hover { background: rgba(0,0,0,.75); }
 
     /* PROJECT CARDS */
-    .proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
-    .proj-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: all .3s; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
-    .proj-card:hover { border-color: var(--indigo); transform: translateY(-5px); box-shadow: 0 16px 48px rgba(129,140,248,.15); }
-    .proj-body { padding: 1.75rem; display: flex; flex-direction: column; flex: 1; }
+    .proj-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+    .proj-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: row; align-items: stretch; transition: all .3s; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+    .proj-card:hover { border-color: var(--indigo); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(129,140,248,.15); }
+    .proj-body { padding: 2rem 2rem 1.75rem; display: flex; flex-direction: column; flex: 1; }
     .proj-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: .5rem; }
     .proj-number { font-size: 2.2rem; font-weight: 900; color: rgba(255,255,255,.1); letter-spacing: -.05em; line-height: 1; transition: color .3s; flex-shrink: 0; }
     .proj-card:hover .proj-number { color: rgba(129,140,248,.25); }
@@ -95,7 +95,7 @@
     .ptag-content { background: var(--indigo-dim); color: var(--indigo); }
     .ptag-bm      { background: var(--amber-dim);  color: var(--amber); }
     .ptag-system  { background: rgba(20,184,166,.15); color: #2DD4BF; }
-    .proj-game { display: inline-flex; align-items: center; gap: .3rem; font-size: .76rem; font-weight: 600; color: var(--muted); background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 100px; padding: .2rem .7rem; }
+    .proj-game { display: inline-flex; align-items: center; gap: .3rem; font-size: .76rem; font-weight: 600; color: var(--mid); background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); border-radius: 100px; padding: .2rem .7rem; }
     .proj-title { font-size: 1.35rem; font-weight: 800; color: var(--dark); margin-bottom: .3rem; letter-spacing: -.03em; }
     .proj-period { font-size: .82rem; color: var(--muted); margin-bottom: 1rem; }
     .proj-desc { font-size: .92rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.5rem; }
@@ -189,9 +189,11 @@
       .hero-inner { grid-template-columns: 1fr clamp(260px, 28vw, 360px); }
     }
     @media (max-width: 900px) {
-      .hero-inner, .proj-grid { grid-template-columns: 1fr; }
+      .hero-inner { grid-template-columns: 1fr; }
       .hero-right { flex-direction: row; flex-wrap: wrap; }
       .stats-inner { grid-template-columns: repeat(2,1fr); }
+      .proj-card { flex-direction: column; }
+      .slider { width: 100%; min-width: 100%; height: 240px; min-height: 240px; border-radius: 0; }
     }
     @media (max-width: 600px) {
       nav { padding: .875rem 1.5rem; } nav .nav-links { display: none; }
@@ -383,7 +385,7 @@ function renderProjects() {
           <span class="proj-number">${p.number}</span>
           <div class="proj-tags">
             <span class="ptag ptag-${p.tagType}">${p.tag}</span>
-            ${p.game ? `<span class="proj-game">🎮 ${p.game}</span>` : ''}
+            ${p.game ? `<span class="proj-game">${p.game}</span>` : ''}
           </div>
         </div>
         <p class="proj-title">${p.title}</p>
