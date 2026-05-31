@@ -152,11 +152,19 @@
     .edu-enrolled  { background: var(--indigo-dim); color: var(--indigo); }
 
     /* SKILLS */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; }
-    .skill-box { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.35rem; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
-    .sb-title { font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; color: var(--indigo); margin-bottom: .875rem; }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .stag { background: #1C2128; border: 1px solid var(--border); border-radius: 100px; padding: .25rem .75rem; font-size: .76rem; color: var(--mid); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px,1fr)); gap: 1rem; }
+    .skill-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; position: relative; }
+    .skill-card-inner { padding: 1.5rem 1rem 1.25rem; display: flex; flex-direction: column; align-items: center; gap: .55rem; text-align: center; }
+    .skill-icon { width: 54px; height: 54px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 900; color: #fff; letter-spacing: -.02em; flex-shrink: 0; }
+    .skill-name { font-size: .9rem; font-weight: 700; color: var(--dark); }
+    .skill-meta { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; justify-content: center; }
+    .skill-level { font-size: .68rem; font-weight: 700; padding: .15rem .55rem; border-radius: 100px; }
+    .level-mid { background: rgba(129,140,248,.18); color: var(--indigo); }
+    .level-low { background: rgba(255,255,255,.07); color: var(--muted); border: 1px solid var(--border); }
+    .skill-category { font-size: .66rem; color: var(--muted); }
+    .skill-overlay { position: absolute; inset: 0; background: rgba(10,14,20,.93); display: flex; align-items: center; justify-content: center; padding: 1.1rem; opacity: 0; transform: translateY(6px); transition: opacity .22s ease, transform .22s ease; pointer-events: none; }
+    .skill-card:hover .skill-overlay { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .skill-overlay-text { font-size: .78rem; color: rgba(255,255,255,.82); line-height: 1.65; white-space: pre-line; }
 
     /* CONTACT */
     #contact-section { background: #080B10; color: #fff; padding: 7rem 3rem; text-align: center; position: relative; overflow: hidden; border-top: 1px solid var(--border); }
@@ -210,7 +218,7 @@
   <ul class="nav-links">
     <li><a href="#career">경력</a></li>
     <li><a href="#projects">프로젝트</a></li>
-    <li><a href="#education">학력</a></li>
+    <li><a href="#education">학력 & 경험</a></li>
     <li><a href="#skills">스킬</a></li>
     <li><a href="#contact-section">연락</a></li>
   </ul>
@@ -487,23 +495,36 @@ function renderEducation() {
   }).join('');
   document.getElementById('education').innerHTML = `
     <div class="section" id="education">
-      <p class="sec-eye fade">Education</p>
-      <h2 class="sec-title fade fd1">학력</h2>
+      <p class="sec-eye fade">Education & Experience</p>
+      <h2 class="sec-title fade fd1">학력 & 경험</h2>
       <div class="edu-grid">${cards}</div>
     </div>`;
 }
 
 /* ── RENDER SKILLS ──────────────────────────────────────────── */
 function renderSkills() {
-  const boxes = DATA.skills.map((s,i) => {
-    const tags = s.items.map(t => `<span class="stag">${t}</span>`).join('');
-    return `<div class="skill-box fade fd${i%4}"><div class="sb-title">${s.category}</div><div class="skill-tags">${tags}</div></div>`;
+  const cards = DATA.skills.map((s, i) => {
+    const levelCls = s.level === '중급' ? 'level-mid' : 'level-low';
+    return `
+    <div class="skill-card fade fd${i % 4}">
+      <div class="skill-card-inner">
+        <div class="skill-icon" style="background:${s.color}">${s.icon}</div>
+        <div class="skill-name">${s.name}</div>
+        <div class="skill-meta">
+          <span class="skill-level ${levelCls}">${s.level}</span>
+          <span class="skill-category">${s.category}</span>
+        </div>
+      </div>
+      <div class="skill-overlay">
+        <p class="skill-overlay-text">${s.desc}</p>
+      </div>
+    </div>`;
   }).join('');
   document.getElementById('skills').innerHTML = `
     <div class="section" id="skills">
       <p class="sec-eye fade">Skills & Tools</p>
       <h2 class="sec-title fade fd1">보유 기술</h2>
-      <div class="skills-grid">${boxes}</div>
+      <div class="skills-grid">${cards}</div>
     </div>`;
 }
 
