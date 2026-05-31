@@ -5,49 +5,82 @@
     "tagType": "content",
     "game": "브라운더스트2",
     "title": "판도라 이스케이프",
-    "period": "2024.09 · M2.0",
-    "desc": "캐릭터 스탯 연동 업그레이드·시간 제한 챌린지·유저 랭킹 경쟁 구조를 포함한 미니게임형 신규 컨텐츠 0→1 기획. 시즈널 미니게임 시리즈의 토대.",
-    "images": [],
+    "period": "2024.08 ~ 2024.12",
+    "desc": "로그라이크 성장의 재미와 박진감 넘치는 전투를 결합한 뱀서라이크 미니게임",
+    "images": [
+      "data/images/project/project_pandoraEscape_01.png",
+      "data/images/project/project_pandoraEscape_02.png",
+      "data/images/project/project_pandoraEscape_03.png",
+      "data/images/project/project_pandoraEscape_04.png",
+      "data/images/project/project_pandoraEscape_05.png",
+      "data/images/project/project_pandoraEscape_06.png",
+      "data/images/project/project_pandoraEscape_07.png",
+      "data/images/project/project_pandoraEscape_08.png",
+      "data/images/project/project_pandoraEscape_09.png"
+    ],
     "metrics": [
       { "label": "플레이",     "value": "수백만 회",     "color": "indigo" },
       { "label": "1인 일평균", "value": "33분",           "color": "indigo" },
       { "label": "",           "value": "상시화 전환",    "color": "" },
-      { "label": "",           "value": "스탠드얼론 제안","color": "" }
+      { "label": "",           "value": "스탠드얼론 제작 제안","color": "" }
     ],
-    "link": "https://www.notion.so/370cca12009c81cc8340d18f8ea5f8e1"
+    "links": [
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c81cc8340d18f8ea5f8e1" }
+    ]
   },
   {
     "number": "02",
-    "tag": "생활형 컨텐츠",
+    "tag": "컨텐츠 기획",
     "tagType": "content",
     "game": "브라운더스트2",
-    "title": "낚시 / 수족관",
-    "period": "M5.12 · 생활형 컨텐츠 신호탄",
-    "desc": "낚싯대 15종(6스탯)·어종 70여 종·맵 5개·통발·수족관 감상 등 생활형 컨텐츠 전 시스템 기획. 전투 외 플레이 목적성을 제공하는 첫 번째 타이틀.",
-    "images": [],
+    "title": "낚시",
+    "period": "2025.06 ~ 2025.12",
+    "desc": "장기적인 수집 / 성장 시스템을 갖춘 생활형 낚시 컨텐츠",
+    "images": [
+      "data/images/project/project_fishing_01.png",
+      "data/images/project/project_fishing_02.png",
+      "data/images/project/project_fishing_03.png",
+      "data/images/project/project_fishing_04.png",
+      "data/images/project/project_fishing_05.png",
+      "data/images/project/project_fishing_06.png",
+      "data/images/project/project_fishing_07.png",
+      "data/images/project/project_fishing_08.png",
+      "data/images/project/project_fishing_09.png"
+    ],
     "metrics": [
       { "label": "첫날 AU", "value": "30% 참여",      "color": "indigo" },
       { "label": "최고",    "value": "80% 참여율",    "color": "indigo" },
       { "label": "",        "value": "일일 루틴 안착", "color": "" },
-      { "label": "",        "value": "도감 코어층 확보","color": "" }
+      { "label": "",        "value": "코어층 확보",    "color": "" }
     ],
-    "link": "https://www.notion.so/370cca12009c8134a6b8ecb79ed90ca9"
+    "links": [
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c8134a6b8ecb79ed90ca9" }
+    ]
   },
   {
     "number": "03",
-    "tag": "BM 기획",
-    "tagType": "bm",
+    "tag": "시스템 기획",
+    "tagType": "system",
     "game": "브라운더스트2",
-    "title": "프레스티지 스킨 행운 뽑기",
-    "period": "2025.05 · M5.6",
-    "desc": "차별화된 프리미엄 코스튬 구성품과 행운 보장형 유료 뽑기 구조 설계. 전 유저층에 소구하는 포인트 설계로 당해 최고 매출 기록 달성.",
-    "images": [],
-    "metrics": [
-      { "label": "당해",      "value": "최고 매출",      "color": "amber" },
-      { "label": "스킨 기간", "value": "매출 34%",       "color": "amber" },
-      { "label": "",          "value": "정기 시즌 정착", "color": "" }
+    "title": "프레스티지 스킨",
+    "period": "2025.05",
+    "desc": "캐릭터성 강화 및 매출 부스팅을 위한 유료 캐릭터 스킨",
+    "images": [
+      "data/images/project/project_skin_01.jpg",
+      "data/images/project/project_skin_02.png",
+      "data/images/project/project_skin_03.png",
+      "data/images/project/project_skin_04.png",
+      "data/images/project/project_skin_05.jpg",
+      "data/images/project/project_skin_06.webp"
     ],
-    "link": "https://www.notion.so/370cca12009c81a3bb44e6fd7835b385"
+    "metrics": [
+      { "label": "당해",      "value": "최고 매출",      "color": "blue" },
+      { "label": "판매 기간", "value": "매출 34%",       "color": "blue" },
+      { "label": "",          "value": "정기 판매 상품 정착", "color": "" }
+    ],
+    "links": [
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c81a3bb44e6fd7835b385" }
+    ]
   },
   {
     "number": "04",
@@ -55,13 +88,17 @@
     "tagType": "bm",
     "game": "브라운더스트2",
     "title": "스텝업 뽑기",
-    "period": "2024.05 · M1.3",
-    "desc": "단계별 확률 보정으로 누적 유료 재화의 효과적인 소각 경로 설계. 단순 소모를 넘어 추가 구매 수요를 유발하는 BM 구조.",
-    "images": [],
+    "period": "2024.05",
+    "desc": "구매 단계가 상슴함에 따라 점진적으로 높은 뽑기 효율을 제공하는 유료 상품",
+    "images": [
+      "data/images/project/project_stepup_01.jpg"
+    ],
     "metrics": [
       { "label": "유료 재화", "value": "70% 소각",  "color": "amber" },
       { "label": "업데이트",  "value": "매출 30%",  "color": "amber" }
     ],
-    "link": "https://www.notion.so/370cca12009c816b857cd327645262ad"
+    "links": [
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c816b857cd327645262ad" }
+    ]
   }
 ]

@@ -21,7 +21,7 @@
   "education": [
     {
       "school":       "세종대학교",
-      "schoolLogo":   "data/images/logo_Sejong_Univ.png",
+      "schoolLogo":   "data/images/logo/logo_Sejong_Univ.png",
       "major":        "법학과",
       "degree":       "학사",
       "startDate":    "2017-03",
