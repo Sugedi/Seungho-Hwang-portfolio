@@ -77,10 +77,6 @@
     .slider-dots { position: absolute; bottom: .75rem; left: 50%; transform: translateX(-50%); display: flex; gap: .4rem; z-index: 2; }
     .sdot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.35); cursor: pointer; transition: all .25s; }
     .sdot.active { background: white; width: 18px; border-radius: 3px; }
-    .slider-arrows { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 .5rem; opacity: 0; transition: opacity .2s; }
-    .slider:hover .slider-arrows { opacity: 1; }
-    .sarrow { background: rgba(0,0,0,.5); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
-    .sarrow:hover { background: rgba(0,0,0,.75); }
 
     /* PROJECT CARDS */
     .proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
@@ -92,6 +88,7 @@
     .ptag { display: inline-block; padding: .25rem .8rem; border-radius: 5px; font-size: .78rem; font-weight: 700; margin-bottom: 1.1rem; }
     .ptag-content { background: var(--indigo-dim); color: var(--indigo); }
     .ptag-bm      { background: var(--amber-dim);  color: var(--amber); }
+    .ptag-system  { background: rgba(20,184,166,.15); color: #2DD4BF; }
     .proj-game { display: inline-flex; align-items: center; gap: .3rem; font-size: .76rem; font-weight: 600; color: var(--muted); background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 100px; padding: .2rem .7rem; margin-left: .4rem; margin-bottom: 1.1rem; }
     .proj-title { font-size: 1.35rem; font-weight: 800; color: var(--dark); margin-bottom: .3rem; letter-spacing: -.03em; }
     .proj-period { font-size: .82rem; color: var(--muted); margin-bottom: 1rem; }
@@ -290,10 +287,6 @@ function sliderHTML(images, alt) {
   ).join('');
   const dots = images.length > 1 ? `<div class="slider-dots">
     ${images.map((_,i)=>`<span class="sdot${i===0?' active':''}" data-i="${i}"></span>`).join('')}
-  </div>
-  <div class="slider-arrows">
-    <button class="sarrow" data-dir="-1">‹</button>
-    <button class="sarrow" data-dir="1">›</button>
   </div>` : '';
   return `<div class="slider">${slides}${dots}</div>`;
 }
@@ -364,12 +357,6 @@ function renderProjects() {
       const inner = m.label ? `${m.label} <b>${m.value}</b>` : m.value;
       return `<span class="metric${cls}">${inner}</span>`;
     }).join('');
-    /* LINKS_START
-    const links = (p.links || []).map(l =>
-      `<a class="proj-link" href="${l.url}" target="_blank">${l.text} →</a>`
-    ).join('');
-    LINKS_END */
-
     return `
     <div class="proj-card fade fd${i%4}">
       ${sliderHTML(p.images, p.title)}
@@ -381,7 +368,6 @@ function renderProjects() {
         <p class="proj-desc">${p.desc}</p>
         <div class="proj-hr"></div>
         <div class="proj-metrics">${metrics}</div>
-        <!-- <div class="proj-links">${''}<!-- links --></div> -->
       </div>
     </div>`;
   }).join('');
@@ -544,16 +530,13 @@ function initSliders() {
       dots[cur]?.classList.add('active');
     };
 
-    const start = () => { timer = setInterval(() => goTo(cur + 1), 3500); };
+    const start = () => { timer = setInterval(() => goTo(cur + 1), 2500); };
     const stop  = () => clearInterval(timer);
 
     start();
     slider.addEventListener('mouseenter', stop);
     slider.addEventListener('mouseleave', start);
     dots.forEach(d => d.addEventListener('click', () => { stop(); goTo(+d.dataset.i); start(); }));
-    slider.querySelectorAll('.sarrow').forEach(a =>
-      a.addEventListener('click', e => { e.preventDefault(); stop(); goTo(cur + +a.dataset.dir); start(); })
-    );
   });
 }
 
