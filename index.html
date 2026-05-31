@@ -65,11 +65,11 @@
     .sec-eye { display: flex; align-items: center; gap: .6rem; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--indigo); margin-bottom: .75rem; }
     .sec-eye::before { content: ''; width: 20px; height: 2px; background: var(--indigo); border-radius: 2px; }
     .sec-title { font-size: clamp(1.8rem,4vw,2.75rem); font-weight: 900; letter-spacing: -.04em; color: var(--dark); margin-bottom: 1rem; }
-    .sec-desc { color: var(--muted); font-size: .95rem; max-width: 480px; line-height: 1.75; margin-bottom: 3rem; }
+    .sec-desc { color: var(--muted); font-size: .95rem; line-height: 1.75; margin-bottom: 3rem; white-space: nowrap; }
 
     /* IMAGE SLIDER */
-    .slider { position: relative; width: 100%; height: 220px; border-radius: 10px; overflow: hidden; background: #1C2128; margin-bottom: 1.5rem; flex-shrink: 0; }
-    .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .65s ease; }
+    .slider { position: relative; width: 100%; height: 280px; border-radius: 10px; overflow: hidden; background: #000; margin-bottom: 1.5rem; flex-shrink: 0; }
+    .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; opacity: 0; transition: opacity .65s ease; }
     .slide.active { opacity: 1; }
     .slider-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: .5rem; }
     .slider-placeholder-icon { font-size: 2.2rem; opacity: .25; }
@@ -86,14 +86,16 @@
     .proj-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
     .proj-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: all .3s; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
     .proj-card:hover { border-color: var(--indigo); transform: translateY(-5px); box-shadow: 0 16px 48px rgba(129,140,248,.15); }
-    .proj-body { padding: 1.75rem; display: flex; flex-direction: column; flex: 1; position: relative; }
-    .proj-number { position: absolute; top: 1.25rem; right: 1.5rem; font-size: 3.5rem; font-weight: 900; color: rgba(255,255,255,.04); letter-spacing: -.05em; line-height: 1; transition: color .3s; }
-    .proj-card:hover .proj-number { color: var(--indigo-dim); }
-    .ptag { display: inline-block; padding: .25rem .8rem; border-radius: 5px; font-size: .78rem; font-weight: 700; margin-bottom: 1.1rem; }
+    .proj-body { padding: 1.75rem; display: flex; flex-direction: column; flex: 1; }
+    .proj-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: .5rem; }
+    .proj-number { font-size: 2.2rem; font-weight: 900; color: rgba(255,255,255,.1); letter-spacing: -.05em; line-height: 1; transition: color .3s; flex-shrink: 0; }
+    .proj-card:hover .proj-number { color: rgba(129,140,248,.25); }
+    .proj-tags { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; justify-content: flex-end; }
+    .ptag { display: inline-block; padding: .25rem .8rem; border-radius: 5px; font-size: .78rem; font-weight: 700; }
     .ptag-content { background: var(--indigo-dim); color: var(--indigo); }
     .ptag-bm      { background: var(--amber-dim);  color: var(--amber); }
     .ptag-system  { background: rgba(20,184,166,.15); color: #2DD4BF; }
-    .proj-game { display: inline-flex; align-items: center; gap: .3rem; font-size: .76rem; font-weight: 600; color: var(--muted); background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 100px; padding: .2rem .7rem; margin-left: .4rem; margin-bottom: 1.1rem; }
+    .proj-game { display: inline-flex; align-items: center; gap: .3rem; font-size: .76rem; font-weight: 600; color: var(--muted); background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 100px; padding: .2rem .7rem; }
     .proj-title { font-size: 1.35rem; font-weight: 800; color: var(--dark); margin-bottom: .3rem; letter-spacing: -.03em; }
     .proj-period { font-size: .82rem; color: var(--muted); margin-bottom: 1rem; }
     .proj-desc { font-size: .92rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.5rem; }
@@ -369,8 +371,13 @@ function renderProjects() {
     <div class="proj-card fade fd${i%4}">
       ${sliderHTML(p.images, p.title)}
       <div class="proj-body">
-        <span class="proj-number">${p.number}</span>
-        <span class="ptag ptag-${p.tagType}">${p.tag}</span>${p.game ? `<span class="proj-game">🎮 ${p.game}</span>` : ''}
+        <div class="proj-header-row">
+          <span class="proj-number">${p.number}</span>
+          <div class="proj-tags">
+            <span class="ptag ptag-${p.tagType}">${p.tag}</span>
+            ${p.game ? `<span class="proj-game">🎮 ${p.game}</span>` : ''}
+          </div>
+        </div>
         <p class="proj-title">${p.title}</p>
         <p class="proj-period">${p.period}</p>
         <p class="proj-desc">${p.desc}</p>
