@@ -5,22 +5,23 @@
     "roleKo":       "게임 시스템 기획자",
     "email":        "happy981215@naver.com",
     "phone":        "010-8858-2659",
-    "intro":        "모바일 라이브 서비스 게임에서 신규 콘텐츠·BM·UX 시스템을 전담 설계한\n게임 시스템 기획자. 0→1 설계부터 라이브 운영까지 전 주기 경험.",
+    "intro":        "모바일 라이브 서비스 게임에서 신규 컨텐츠·BM·UX 시스템을 전담 설계한\n게임 시스템 기획자. 0→1 설계부터 라이브 운영까지 전 주기 경험.",
     "careerStart":  "2024-04-08",
-    "contactTitle": "함께 만들어요.",
-    "contactDesc":  "새로운 시스템을 함께 설계할 팀을 찾고 있습니다.\n언제든지 편하게 연락 주세요."
+    "contactTitle": "감사합니다.",
+    "contactDesc":  "새로운 게임을 함께 만들어갈 팀을 찾고 있습니다.\n언제든지 편하게 연락 주세요."
   },
 
   "stats": [
-    { "value": 20, "suffix": "+", "label": "라이브 업데이트", "sub": "점검 포함 전체" },
-    { "value": 30, "suffix": "+", "label": "편의성 개선 항목", "sub": "UX 개선 누적" },
-    { "value": 34, "suffix": "%", "label": "스킨 기간 매출 기여", "sub": "당해 최고 매출 기록" },
-    { "value":  5, "suffix": "+", "label": "BM 신규 설계", "sub": "가챠·패스·스킨 등" }
+    { "value": 20, "suffix": "+", "label": "라이브 업데이트", "sub": "IP 콜라보레이션 경험" },
+    { "value": 30, "suffix": "+", "label": "편의성 개선", "sub": "UX 개선" },
+    { "value": 34, "suffix": "%", "label": "최고 매출 기여", "sub": "프레스티지 스킨 매출 기록" },
+    { "value":  5, "suffix": "+", "label": "BM 신규 설계", "sub": "가챠·패스·패키지 등" }
   ],
 
   "education": [
     {
       "school":       "세종대학교",
+      "schoolLogo":   "data/images/logo_Sejong_Univ.png",
       "major":        "법학과",
       "degree":       "학사",
       "startDate":    "2017-03",
@@ -30,9 +31,8 @@
   ],
 
   "skills": [
-    { "category": "시스템 기획",  "items": ["콘텐츠 설계", "BM 설계", "경제 밸런싱", "가챠 시스템", "성장 시스템"] },
-    { "category": "UX / 편의성",  "items": ["UI 기획", "UX 플로우", "접근성 설계", "와이어프레임"] },
-    { "category": "툴 & 문서",    "items": ["Excel (확률 시뮬)", "Google Sheets", "Jira", "Confluence", "Notion"] },
+    { "category": "기획",  "items": ["컨텐츠 설계", "BM 설계", "경제 밸런싱", "가챠 시스템", "성장 시스템", "미니게임 기획"] },
+    { "category": "툴",    "items": ["MS Excel", "MS PowerPoint", "Jira", "버전 관리 툴" ] },
     { "category": "라이브 운영",  "items": ["업데이트 세팅", "IP 콜라보", "이벤트 설계", "운영툴 관리"] }
   ]
 }

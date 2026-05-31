@@ -120,6 +120,10 @@
     .career-project-info { flex: 1; min-width: 0; }
     .career-project-name { font-size: .98rem; font-weight: 800; color: var(--dark); letter-spacing: -.02em; margin-bottom: .1rem; }
     .career-project-desc { font-size: .74rem; color: var(--muted); }
+    /* 프로젝트 배너 이미지 */
+    .career-project-banner { position: relative; height: 180px; overflow: hidden; background: #1C2128; border-bottom: 1px solid var(--border); }
+    .career-project-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .career-project-banner-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 55%); pointer-events: none; }
     /* 태스크 그리드 */
     .career-project-body { padding: 1.25rem 2rem 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1rem; }
     .career-item { display: flex; align-items: flex-start; gap: .75rem; padding: 1rem; background: #1C2128; border-radius: 10px; border: 1px solid var(--border); }
@@ -131,7 +135,8 @@
     /* EDUCATION */
     .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.25rem; }
     .edu-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem 1.75rem; box-shadow: 0 1px 4px rgba(0,0,0,.3); display: flex; gap: 1.1rem; align-items: flex-start; }
-    .edu-icon-wrap { width: 42px; height: 42px; background: var(--indigo-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .edu-icon-wrap { width: 42px; height: 42px; background: var(--indigo-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; overflow: hidden; }
+    .edu-icon-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
     .edu-school { font-size: 1.05rem; font-weight: 800; color: var(--dark); margin-bottom: .2rem; }
     .edu-major { font-size: .85rem; color: var(--indigo); font-weight: 600; margin-bottom: .3rem; }
     .edu-period { font-size: .78rem; color: var(--muted); }
@@ -379,11 +384,16 @@ function renderProjects() {
 }
 
 /* ── RENDER CAREER ──────────────────────────────────────────── */
+function isCurrent(endDate) {
+  return !endDate || endDate === '[재직 중]';
+}
+
 function renderCareer() {
   const cards = DATA.careers.map((c, ci) => {
-    const end = c.endDate;
-    const dur = calcDuration(c.startDate, end);
-    const badge = !end
+    const current = isCurrent(c.endDate);
+    const endForCalc = current ? null : c.endDate;
+    const dur = calcDuration(c.startDate, endForCalc);
+    const badge = current
       ? `<span class="badge-green" style="display:inline-flex;margin-top:.3rem">재직 중</span>` : '';
 
     const logo = c.companyLogo
@@ -391,6 +401,13 @@ function renderCareer() {
       : `<div class="career-logo-placeholder">🏢</div>`;
 
     const projects = (c.projects || []).map(proj => {
+      const banner = proj.image
+        ? `<div class="career-project-banner">
+             <img src="${proj.image}" alt="${proj.name}">
+             <div class="career-project-banner-overlay"></div>
+           </div>`
+        : '';
+
       const tasks = (proj.tasks || []).map(h => `
         <div class="career-item">
           <span class="ci-icon">${h.icon}</span>
@@ -410,6 +427,7 @@ function renderCareer() {
             <div class="career-project-desc">${proj.desc}</div>
           </div>
         </div>
+        ${banner}
         <div class="career-project-body">${tasks}</div>
       </div>`;
     }).join('');
@@ -421,7 +439,7 @@ function renderCareer() {
         <div class="career-header-info">
           <div class="career-co">${c.company}</div>
           <div class="career-role-txt">${c.role}</div>
-          <div class="career-dates">${fmtDate(c.startDate)} ~ ${end ? fmtDate(end) : '현재'} &nbsp;·&nbsp; ${dur}</div>
+          <div class="career-dates">${fmtDate(c.startDate)} ~ ${current ? '현재' : fmtDate(c.endDate)} &nbsp;·&nbsp; ${dur}</div>
           ${badge}
         </div>
       </div>
@@ -442,9 +460,12 @@ function renderEducation() {
   const cards = DATA.education.map((e,i) => {
     const statusLabel = e.status === 'graduated' ? '졸업' : '재학 중';
     const statusCls   = e.status === 'graduated' ? 'edu-graduated' : 'edu-enrolled';
+    const eduIcon = e.schoolLogo
+      ? `<div class="edu-icon-wrap"><img src="${e.schoolLogo}" alt="${e.school} 로고"></div>`
+      : `<div class="edu-icon-wrap">🎓</div>`;
     return `
     <div class="edu-card fade fd${i}">
-      <div class="edu-icon-wrap">🎓</div>
+      ${eduIcon}
       <div>
         <div class="edu-school">${e.school}</div>
         <div class="edu-major">${e.major} · ${e.degree}</div>
