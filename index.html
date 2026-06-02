@@ -164,8 +164,10 @@
     .level-mid { background: rgba(129,140,248,.18); color: var(--indigo); }
     .level-low { background: rgba(255,255,255,.07); color: var(--muted); border: 1px solid var(--border); }
     .skill-category { font-size: .66rem; color: var(--muted); }
-    .skill-tooltip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); background: #1A1F2B; border: 1px solid var(--border); border-radius: 10px; padding: .875rem 1rem; min-width: 200px; max-width: 260px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; white-space: pre-line; font-size: .8rem; color: rgba(255,255,255,.82); line-height: 1.7; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+    .skill-tooltip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); background: #1A1F2B; border: 1px solid var(--border); border-radius: 10px; padding: .875rem 1.1rem; width: max-content; max-width: 380px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; white-space: pre-line; font-size: .8rem; color: rgba(255,255,255,.82); line-height: 1.7; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
     .skill-card:hover .skill-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .skill-card { transition: border-color .2s, box-shadow .2s; }
+    .skill-card:hover { border-color: var(--indigo); box-shadow: 0 4px 20px rgba(129,140,248,.18); }
 
     /* CONTACT */
     #contact-section { background: #080B10; color: #fff; padding: 7rem 3rem; text-align: center; position: relative; overflow: hidden; border-top: 1px solid var(--border); }
@@ -220,7 +222,7 @@
   <button class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;cursor:pointer;padding:0;">승호<em>.</em></button>
   <ul class="nav-links">
     <li><a href="#career">경력</a></li>
-    <li><a href="#projects">프로젝트</a></li>
+    <li><a href="#projects">주요 작업</a></li>
     <li><a href="#education">학력 & 경험</a></li>
     <li><a href="#skills">스킬</a></li>
     <li><a href="#contact-section">연락</a></li>
@@ -399,8 +401,8 @@ function renderProjects() {
   }).join('');
   document.getElementById('projects').innerHTML = `
     <div class="section" id="projects-inner">
-      <p class="sec-eye fade">Featured Projects</p>
-      <h2 class="sec-title fade fd1">주요 프로젝트</h2>
+      <p class="sec-eye fade">Featured Works</p>
+      <h2 class="sec-title fade fd1">주요 작업</h2>
       <div class="proj-grid">${cards}</div>
     </div>`;
 }

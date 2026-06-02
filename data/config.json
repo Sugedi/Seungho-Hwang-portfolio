@@ -43,7 +43,7 @@
     { "name": "MS Office",  "category": "사무",     "level": "중급", "icon": "MS",  "color": "#0078D4", "desc": "· Excel 수식 기반 자동화 및 데이터 테이블 설계\n· 기획 수치 문서 / 밸런싱 시트 작성\n· Excel / PowerPoint 기반 기획서 제작" },
     { "name": "Jira",       "category": "협업",     "level": "중급", "icon": "J",   "color": "#0052CC", "desc": "· 이슈 트래킹" },
     { "name": "Git",        "category": "버전관리", "level": "중급", "icon": "Git", "color": "#F05032", "desc": "· 버전 관리 및 브랜치 관리 경험" },
-    { "name": "Unity",      "category": "개발",     "level": "중급", "icon": "U",   "color": "#1C1C1E", "desc": "· 현 직장 라이브 서비스 환경에서 지속 사용 중\n· 3D 쿼터뷰 슈팅 게임 개발 경험" },
+    { "name": "Unity",      "category": "개발",     "level": "중급", "icon": "U",   "color": "#1C1C1E", "desc": "· 현 직장 라이브 서비스 환경에서 사용 중\n· 3D 쿼터뷰 슈팅 게임 개발 경험" },
     { "name": "C#",         "category": "개발",     "level": "초급", "icon": "C#",  "color": "#7B3F9E", "desc": "· Unity 환경에서 몬스터 AI\n· 퀘스트 시스템 스크립트 구현 경험" }
   ]
 }
