@@ -64,7 +64,7 @@
     .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; text-align: center; }
     .stat-num { font-size: 3rem; font-weight: 900; color: #fff; letter-spacing: -.05em; line-height: 1; margin-bottom: .3rem; }
     .stat-num sup { font-size: 1.5rem; vertical-align: super; }
-    .stat-lbl { font-size: .8rem; color: rgba(255,255,255,.7); font-weight: 500; }
+    .stat-lbl { font-size: .95rem; color: rgba(255,255,255,.92); font-weight: 700; }
     .stat-sub { font-size: .68rem; color: rgba(255,255,255,.4); margin-top: .15rem; }
 
     /* SECTION */
@@ -113,6 +113,7 @@
     .metric { background: #1C2128; border: 1px solid var(--border); border-radius: 6px; padding: .28rem .75rem; font-size: .8rem; color: var(--muted); }
     .metric b { color: var(--indigo); }
     .metric.m-amber b { color: var(--amber); }
+    .metric.m-teal  b { color: #2DD4BF; }
     .proj-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; }
     .proj-link { display: inline-flex; align-items: center; gap: .35rem; padding: .5rem 1rem; border: 1px solid rgba(129,140,248,.35); border-radius: 7px; font-size: .82rem; font-weight: 700; color: var(--indigo); text-decoration: none; transition: all .2s; background: transparent; }
     .proj-link:hover { background: var(--indigo-dim); border-color: var(--indigo); }
@@ -287,7 +288,6 @@ function calcDuration(startStr, endStr) {
   const e = endStr ? parseDateStr(endStr) : new Date();
   let years = e.getFullYear() - s.getFullYear();
   let months = e.getMonth() - s.getMonth();
-  if (e.getDate() < s.getDate()) months--;
   if (months < 0) { years--; months += 12; }
   if (years > 0) return `약 ${years}년 ${months}개월`;
   return `약 ${months}개월`;
@@ -340,7 +340,7 @@ function renderHero() {
         <h1 class="hero-name">${p.name}</h1>
         <p class="hero-role"><strong>${yr}년차 ${p.roleKo}</strong><br>${p.intro.replace(/\n/g,'<br>')}</p>
         <div class="hero-cta">
-          <a href="#projects" class="btn btn-primary">프로젝트 보기 ↓</a>
+          <a href="#projects" class="btn btn-primary">주요 작업 보기 ↓</a>
           <a href="mailto:${p.email}" class="btn btn-outline">연락하기</a>
         </div>
       </div>
@@ -354,7 +354,7 @@ function renderHero() {
         <div class="hic">
           <div class="hic-label">재직 기간</div>
           <div class="hic-value" id="hero-duration">${dur}</div>
-          <div class="hic-sub">${fmtDate(p.careerStart)} ~</div>
+          <div class="hic-sub">${fmtDate(p.careerStart)} ~ 현재</div>
         </div>
         <div class="hic">
           <div class="hic-label">담당 프로젝트</div>
@@ -384,7 +384,7 @@ function renderStats() {
 function renderProjects() {
   const cards = DATA.projects.map((p,i) => {
     const metrics = p.metrics.map(m => {
-      const cls = m.color === 'amber' ? ' m-amber' : '';
+      const cls = m.color === 'amber' ? ' m-amber' : m.color === 'blue' ? ' m-teal' : '';
       const inner = m.label ? `${m.label} <b>${m.value}</b>` : m.value;
       return `<span class="metric${cls}">${inner}</span>`;
     }).join('');
@@ -404,6 +404,7 @@ function renderProjects() {
         <p class="proj-desc">${p.desc}</p>
         <div class="proj-hr"></div>
         <div class="proj-metrics">${metrics}</div>
+        ${p.links && p.links.length ? `<div class="proj-links">${p.links.filter(l=>l.text !== '세부 내용 보기').map(l=>`<a class="proj-link" href="${l.url}" target="_blank" rel="noopener">↗ ${l.text}</a>`).join('')}</div>` : ''}
       </div>
     </div>`;
   }).join('');

@@ -25,7 +25,8 @@
       { "label": "",           "value": "스탠드얼론 제작 제안","color": "" }
     ],
     "links": [
-      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c81cc8340d18f8ea5f8e1" }
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c81cc8340d18f8ea5f8e1" },
+      { "text": "인게임 영상", "url": "https://youtu.be/TZr9MrvNKC4?t=946" }
     ]
   },
   {
@@ -54,7 +55,8 @@
       { "label": "",        "value": "코어층 확보",    "color": "" }
     ],
     "links": [
-      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c8134a6b8ecb79ed90ca9" }
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c8134a6b8ecb79ed90ca9" },
+      { "text": "인게임 영상", "url": "https://youtu.be/Mbl-wl_x4Cs?t=499" }
     ]
   },
   {
@@ -79,7 +81,8 @@
       { "label": "",          "value": "정기 판매 상품 정착", "color": "" }
     ],
     "links": [
-      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c81a3bb44e6fd7835b385" }
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c81a3bb44e6fd7835b385" },
+      { "text": "인게임 영상", "url": "https://youtu.be/8WfB5xyunO4?t=8" }
     ]
   },
   {
@@ -98,7 +101,8 @@
       { "label": "업데이트",  "value": "매출 30%",  "color": "amber" }
     ],
     "links": [
-      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c816b857cd327645262ad" }
+      { "text": "세부 내용 보기", "url": "https://www.notion.so/370cca12009c816b857cd327645262ad" },
+      { "text": "인게임 영상", "url": "https://youtu.be/CJQwMu6zIp4?t=243" }
     ]
   }
 ]
