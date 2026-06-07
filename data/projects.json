@@ -61,6 +61,34 @@
   },
   {
     "number": "03",
+    "tag": "컨텐츠 기획",
+    "tagType": "content",
+    "game": "브라운더스트2",
+    "title": "영지",
+    "period": "2026.01 ~ 2026.06",
+    "desc": "최애 캐릭터를 초대하고 영지를 꾸미며 성장시키는 거점 생활형 컨텐츠",
+    "images": [
+      "data/images/project/project_estate_01.png",
+      "data/images/project/project_estate_02.png",
+      "data/images/project/project_estate_03.png",
+      "data/images/project/project_estate_04.png",
+      "data/images/project/project_estate_05.png",
+      "data/images/project/project_estate_06.png",
+      "data/images/project/project_estate_07.png",
+      "data/images/project/project_estate_08.png",
+      "data/images/project/project_estate_09.png",
+      "data/images/project/project_estate_10.png",
+      "data/images/project/project_estate_11.png"
+    ],
+    "metrics": [
+      { "label": "", "value": "서브컬처 캐릭터 활용도 강화", "color": "" },
+      { "label": "", "value": "일일 루틴 안착",              "color": "" },
+      { "label": "", "value": "코어층 확보",                 "color": "" }
+    ],
+    "links": []
+  },
+  {
+    "number": "04",
     "tag": "시스템 기획",
     "tagType": "system",
     "game": "브라운더스트2",
@@ -86,13 +114,13 @@
     ]
   },
   {
-    "number": "04",
+    "number": "05",
     "tag": "BM 기획",
     "tagType": "bm",
     "game": "브라운더스트2",
     "title": "스텝업 뽑기",
     "period": "2024.05",
-    "desc": "구매 단계가 상슴함에 따라 점진적으로 높은 뽑기 효율을 제공하는 유료 상품",
+    "desc": "구매 단계가 상승함에 따라 점진적으로 높은 뽑기 효율을 제공하는 유료 상품",
     "images": [
       "data/images/project/project_stepup_01.jpg"
     ],

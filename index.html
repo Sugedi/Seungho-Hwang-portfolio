@@ -78,18 +78,30 @@
 
     /* IMAGE SLIDER */
     .slider { position: relative; width: 46%; min-width: 46%; height: auto; min-height: 300px; border-radius: 0; overflow: hidden; background: #000; margin-bottom: 0; flex-shrink: 0; }
-    .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; opacity: 0; transition: opacity .65s ease; }
-    .slide.active { opacity: 1; }
+    .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; opacity: 0; transition: opacity .65s ease; pointer-events: none; }
+    .slide.active { opacity: 1; pointer-events: auto; }
     .slider-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: .5rem; }
     .slider-placeholder-icon { font-size: 2.2rem; opacity: .25; }
     .slider-placeholder-txt { font-size: .78rem; color: var(--muted); opacity: .6; }
     .slider-dots { position: absolute; bottom: .75rem; left: 50%; transform: translateX(-50%); display: flex; gap: .4rem; z-index: 2; }
     .sdot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.35); cursor: pointer; transition: all .25s; }
     .sdot.active { background: white; width: 18px; border-radius: 3px; }
-    .slider-arrows { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 .5rem; opacity: 0; transition: opacity .2s; }
+    .slider-arrows { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 .75rem; opacity: 0; transition: opacity .2s; pointer-events: none; }
     .slider:hover .slider-arrows { opacity: 1; }
-    .sarrow { background: rgba(0,0,0,.5); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
-    .sarrow:hover { background: rgba(0,0,0,.75); }
+    .sarrow { background: rgba(0,0,0,.55); color: white; border: none; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: background .2s; pointer-events: auto; }
+    .sarrow:hover { background: rgba(0,0,0,.8); }
+
+    /* LIGHTBOX */
+    #lightbox { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,.82); backdrop-filter: blur(6px); align-items: center; justify-content: center; cursor: zoom-out; }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; box-shadow: 0 24px 80px rgba(0,0,0,.6); cursor: default; }
+    #lightbox-close { position: fixed; top: 1.25rem; right: 1.5rem; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #fff; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; z-index: 1000; }
+    #lightbox-close:hover { background: rgba(255,255,255,.25); }
+    .lb-arrow { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #fff; border-radius: 50%; width: 48px; height: 48px; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; z-index: 1000; }
+    .lb-arrow:hover { background: rgba(255,255,255,.28); }
+    #lightbox-prev { left: 1.5rem; }
+    #lightbox-next { right: 1.5rem; }
+    .slide { cursor: zoom-in; }
 
     /* PROJECT CARDS */
     .proj-grid { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -222,6 +234,12 @@
 <body>
 
 <!-- 로딩 스피너 -->
+<div id="lightbox">
+  <button id="lightbox-close">✕</button>
+  <button class="lb-arrow" id="lightbox-prev">‹</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lb-arrow" id="lightbox-next">›</button>
+</div>
 <div id="page-loader" style="display:flex;position:fixed;inset:0;background:rgba(13,17,23,.97);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .3s;">
   <div style="width:36px;height:36px;border:3px solid #21262D;border-top-color:#818CF8;border-radius:50%;animation:spin .8s linear infinite;"></div>
   <p id="loader-msg" style="font-size:.88rem;color:#8B949E;text-align:center;line-height:1.6;">데이터 불러오는 중...</p>
@@ -563,6 +581,37 @@ function renderFooter() {
 }
 
 /* ── INIT SLIDERS ───────────────────────────────────────────── */
+/* ── LIGHTBOX ───────────────────────────────────────────────── */
+let _lbSrcs = [], _lbIdx = 0;
+
+function openLightbox(srcs, idx) {
+  _lbSrcs = srcs; _lbIdx = idx;
+  document.getElementById('lightbox-img').src = _lbSrcs[_lbIdx];
+  const hasMult = _lbSrcs.length > 1;
+  document.getElementById('lightbox-prev').style.display = hasMult ? 'flex' : 'none';
+  document.getElementById('lightbox-next').style.display = hasMult ? 'flex' : 'none';
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function lbGo(dir) {
+  _lbIdx = (_lbIdx + dir + _lbSrcs.length) % _lbSrcs.length;
+  document.getElementById('lightbox-img').src = _lbSrcs[_lbIdx];
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('lightbox').addEventListener('click', closeLightbox);
+document.getElementById('lightbox-img').addEventListener('click', e => e.stopPropagation());
+document.getElementById('lightbox-close').addEventListener('click', e => { e.stopPropagation(); closeLightbox(); });
+document.getElementById('lightbox-prev').addEventListener('click', e => { e.stopPropagation(); lbGo(-1); });
+document.getElementById('lightbox-next').addEventListener('click', e => { e.stopPropagation(); lbGo(1); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft')  lbGo(-1);
+  if (e.key === 'ArrowRight') lbGo(1);
+});
+
 function initSliders() {
   const pool = [];
 
@@ -583,9 +632,15 @@ function initSliders() {
 
     slider.addEventListener('mouseenter', () => s.paused = true);
     slider.addEventListener('mouseleave', () => s.paused = false);
-    dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.i); }));
+    const srcs = slides.map(img => img.src);
+    slider.addEventListener('click', e => {
+      if (e.target.classList.contains('slide') && e.target.classList.contains('active')) {
+        openLightbox(srcs, s.cur);
+      }
+    });
+    dots.forEach(d => d.addEventListener('click', e => { e.stopPropagation(); goTo(+d.dataset.i); }));
     slider.querySelectorAll('.sarrow').forEach(a =>
-      a.addEventListener('click', e => { e.preventDefault(); goTo(s.cur + +a.dataset.dir); })
+      a.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); goTo(s.cur + +a.dataset.dir); })
     );
 
     pool.push({ s, goTo });
