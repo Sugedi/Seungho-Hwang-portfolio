@@ -353,7 +353,7 @@ function renderHero() {
         </div>
         <div class="hic">
           <div class="hic-label">재직 기간</div>
-          <div class="hic-value">${dur}</div>
+          <div class="hic-value" id="hero-duration">${dur}</div>
           <div class="hic-sub">${fmtDate(p.careerStart)} ~</div>
         </div>
         <div class="hic">
@@ -646,6 +646,14 @@ async function boot() {
   }
 }
 boot();
+
+/* ── 재직 기간 자동 갱신 (1분마다) ─────────────────────────────── */
+setInterval(() => {
+  const el = document.getElementById('hero-duration');
+  if (el && DATA && DATA.personal) {
+    el.textContent = calcDuration(DATA.personal.careerStart, null);
+  }
+}, 60000);
 </script>
 </body>
 </html>
